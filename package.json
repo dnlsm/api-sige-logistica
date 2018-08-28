@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dnlsm/api-sige-logistica/issues"
   },
-  "homepage": "https://github.com/dnlsm/api-sige-logistica#readme"
+  "homepage": "https://github.com/dnlsm/api-sige-logistica#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
