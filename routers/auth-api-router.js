@@ -18,7 +18,7 @@ router.get('/', (req,res)=>{
 		res.json(MISSING_PARAMETERS)
 	else  // SELECT * FROM USER WHERE user_login = "username" AND user_password = "password"
 		SELECT('*', 'USER', [
-								["user_login", username]
+								["user_login", username],
 								["user_password", password]
 							]
 		)
