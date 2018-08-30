@@ -3,9 +3,16 @@
 const express = require('express')
 const router = express.Router()
 
+// importando utilitários
+const {SELECT, INSERT_INTO} = require('../../../utils/db-connect')
+const {MISSING_PARAMETERS,INTERNAL_SERVER_ERROR,ITEM_NOT_FOUND} = require('../../../utils/error-messages')
 
-router.get('/', (req,res)=>{
-	res.end('new-item-api-router')
+
+router.post('/', (req,res)=>{
+
+	var 
+
+
 })
 
 
