@@ -14,7 +14,7 @@ router.get('/', (req,res)=>{
 		res.json(	{
 						msg	: "Protocol found",
 						status_code	: 200,
-						return	:	results.map((el)=>
+						return	:	results.map((el)=>(
 										{
 											type: 			"PROTOCOL",
 											code: 			el['protocol_code'],
@@ -28,7 +28,7 @@ router.get('/', (req,res)=>{
 											invoice_folder: el['protocol_invoice_folder'],
 											notes: 			el['protocol_notes']
 										}
-									)
+									))
 					}
 			)
 	})
