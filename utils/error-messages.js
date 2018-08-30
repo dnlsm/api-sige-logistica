@@ -31,6 +31,12 @@ const ITEM_NOT_FOUND =
 			status_code: 400
 	}
 
+const USER_NOT_FOUND =
+	{
+		msg : "Missing parameters",
+		status_code: 400
+	}
+
 
 // IMPORTANTE: Exportar mensagens
 module.exports =
@@ -39,5 +45,6 @@ module.exports =
 	INVALID_TOKEN,
 	INTERNAL_SERVER_ERROR,
 	MISSING_PARAMETERS,
-	ITEM_NOT_FOUND
+	ITEM_NOT_FOUND,
+	USER_NOT_FOUND
 }
