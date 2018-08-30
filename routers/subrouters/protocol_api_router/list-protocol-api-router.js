@@ -8,6 +8,7 @@ const {SELECT} = require('../../../utils/db-connect')
 const {PROTOCOL_NOT_FOUND,MISSING_PARAMETERS,INTERNAL_SERVER_ERROR} = require('../../../utils/error-messages')
 
 router.get('/', (req,res)=>{
+	// SELECT * FROM PROTOCOL
 	SELECT('*', 'PROTOCOL')
 	.exec()
 	.onAny((results)=>{
