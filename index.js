@@ -20,6 +20,8 @@ var api_router = require('./routers/api-router')
 
 
 
+
+
 	// Configura Middleware para webpack com hot-reload
 	app.use(require("webpack-dev-middleware")(compiler, {
 		logLevel: 'warn', publicPath: webpackConfig.output.publicPath
