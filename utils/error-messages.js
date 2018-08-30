@@ -25,17 +25,16 @@ const MISSING_PARAMETERS =
 		status_code: 400
 	}
 
-<<<<<<< HEAD
 const ITEM_NOT_FOUND =
 	{
 			msg : "Item not found",
 			status_code: 400
-=======
+	}
+
 const USER_NOT_FOUND =
 	{
 		msg : "Missing parameters",
 		status_code: 400
->>>>>>> fb830ebd497c0d9d3a8ecd4e2bc0fdd2511c2ac1
 	}
 
 
@@ -46,10 +45,6 @@ module.exports =
 	INVALID_TOKEN,
 	INTERNAL_SERVER_ERROR,
 	MISSING_PARAMETERS,
-<<<<<<< HEAD
-	ITEM_NOT_FOUND
-}
-=======
+	ITEM_NOT_FOUND,
 	USER_NOT_FOUND
 }
->>>>>>> fb830ebd497c0d9d3a8ecd4e2bc0fdd2511c2ac1
