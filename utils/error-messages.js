@@ -6,6 +6,12 @@ const INVALID_CREDENTIALS	=
 		status_code	: 401
 	}
 
+const INVALID_TOKEN	=	
+	{
+		msg	: "Invalid token",
+		status_code	: 401
+	}
+
 const INTERNAL_SERVER_ERROR =
 	{
 		msg : "Internal Server Error",
@@ -24,6 +30,7 @@ const MISSING_PARAMETERS =
 module.exports = 
 {
 	INVALID_CREDENTIALS,
+	INVALID_TOKEN,
 	INTERNAL_SERVER_ERROR,
 	MISSING_PARAMETERS
 }

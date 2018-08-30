@@ -5,7 +5,25 @@ const router = express.Router()
 
 
 router.get('/', (req,res)=>{
-	res.end('inner-api-router')
+
+	res.json({
+				msg	: "Valid token",
+				status_code	: 200,
+				return :		{
+									type: 			"CURRENT_USER",
+									login: 			req['user_credentials']['a_user_login'],
+									full_name: 		req['user_credentials']['a_user_full_name'],
+									category: 		req['user_credentials']['a_user_category'],
+									place: 			req['user_credentials']['a_user_place'],
+									place_location: req['user_credentials']['a_user_place_location'],
+									token:	{
+												type: 		"CURRENT_SESSION",
+												value: 		req['user_credentials']['a_token']['value'],
+												creation: 	req['user_credentials']['a_token']['creation'],
+												expiration: req['user_credentials']['a_token']['expiration']
+											}
+						}
+			})
 })
 
 
