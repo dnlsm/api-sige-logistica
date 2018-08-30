@@ -1,3 +1,4 @@
+// Mensagens padões para erros e afins
 
 const INVALID_CREDENTIALS	=	
 	{
@@ -18,8 +19,8 @@ const MISSING_PARAMETERS =
 		status_code: 400
 	}
 
-console.log(INVALID_CREDENTIALS)
 
+// IMPORTANTE: Exportar mensagens
 module.exports = 
 {
 	INVALID_CREDENTIALS,

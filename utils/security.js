@@ -1,3 +1,5 @@
+// Função auxiliar para geração de tokens de tamanho fixo
+
 function generateToken(size){
 	const possibles = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 	var token = ''

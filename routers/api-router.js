@@ -1,12 +1,16 @@
+// Rota /api
+// importação do router
 const express = require('express')
-var router = express.Router()
+const router = express.Router()
 
 
-// TODO router.use('authentication-middleware')
 
 router.get('/', (req,res)=>{
 	res.end('api-router')
 })
+
+// TODO router.use('authentication-middleware')
+
 
 var inner_api_router = require('./inner-api-router')
 router.use('/inner', inner_api_router)

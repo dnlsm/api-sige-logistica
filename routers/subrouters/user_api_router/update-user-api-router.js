@@ -1,6 +1,7 @@
-//
+// Rota /api/inner/user/update
+// importação do router
 const express = require('express')
-var router = express.Router()
+const router = express.Router()
 
 
 router.get('/', (req,res)=>{

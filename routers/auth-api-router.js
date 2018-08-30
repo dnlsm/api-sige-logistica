@@ -1,6 +1,9 @@
+// Rota /api/auth
+// importação do router
 const express = require('express')
-var router = express.Router()
+const router = express.Router()
 
+// importando utilitários
 const {SELECT, INSERT_INTO} = require('../utils/db-connect')
 const {INVALID_CREDENTIALS,MISSING_PARAMETERS,INTERNAL_SERVER_ERROR} = require('../utils/error-messages')
 const {generateToken} = require('../utils/security')

@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-for="item in dados" class="item">
-			Numero: {{item}}
+			Number: {{item}}
 			
 		</div>
 	</div>
