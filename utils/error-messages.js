@@ -43,6 +43,11 @@ const PROTOCOL_NOT_FOUND =
 		status_code: 400
 	}
 
+const ITEM_ALREADY_EXISTS =
+	{
+		msg : "Item already exists"
+	}
+
 // IMPORTANTE: Exportar mensagens
 module.exports =
 {
@@ -52,5 +57,6 @@ module.exports =
 	MISSING_PARAMETERS,
 	USER_NOT_FOUND,
 	PROTOCOL_NOT_FOUND,
-	ITEM_NOT_FOUND
+	ITEM_NOT_FOUND,
+	ITEM_ALREADY_EXISTS
 }
