@@ -27,6 +27,7 @@ router.get('/', (req,res)=>{
 										date: result['transportation_date'],
 										notes: result['transportation_notes'],
 										is_active: result['transportation_is_active'],
+										protocol: result['fk_transportation_protocol_code'],
 										requester_user: result['fk_transportation_requester_user_login'],
 										requested_user: result['fk_transportation_requested_user_login'],
 										from: result['fk_transportation_from_place_name'],
