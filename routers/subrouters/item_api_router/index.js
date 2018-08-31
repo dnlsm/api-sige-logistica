@@ -18,14 +18,14 @@ router.get('/', (req,res)=>{
 		res.json(MISSING_PARAMETERS)
 	else  // SELECT * FROM ITEM WHERE item_code = "item"
 		SELECT('*', 'ITEM', [
-								["item_code", item],
+								["item_code", item]
 							]
 		)
 		.exec()
 		.onOne((result)=>{
 			result = result[0]
 					res.json(	{
-									msg	: "Login successful",
+									msg	: "Item found",
 									status_code	: 200,
 									return	:	{ type: 'ITEM',
 															code: result.item_code,
@@ -35,6 +35,7 @@ router.get('/', (req,res)=>{
 								}
 							)
 				})
+
 				.onZero(()=>
 					res.json(ITEM_NOT_FOUND)
 				)
