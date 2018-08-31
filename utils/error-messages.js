@@ -42,6 +42,11 @@ const PROTOCOL_NOT_FOUND =
 		msg : "Missing parameters",
 		status_code: 400
 	}
+const PROTOCOL_ALREADY_EXIST =
+	{
+		msg : "Missing parameters",
+		status_code: 400
+	}
 
 // IMPORTANTE: Exportar mensagens
 module.exports =
@@ -52,5 +57,6 @@ module.exports =
 	MISSING_PARAMETERS,
 	USER_NOT_FOUND,
 	PROTOCOL_NOT_FOUND,
-	ITEM_NOT_FOUND
+	ITEM_NOT_FOUND,
+	PROTOCOL_ALREADY_EXIST
 }
