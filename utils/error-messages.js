@@ -41,6 +41,11 @@ const PROTOCOL_NOT_FOUND =
 		msg : "Missing parameters",
 		status_code: 400
 	}
+const PROTOCOL_ALREADY_EXIST =
+	{
+		msg : "Missing parameters",
+		status_code: 400
+	}
 
 const TRANSPORTATION_NOT_FOUND =
 	{
@@ -73,6 +78,7 @@ module.exports =
 	USER_NOT_FOUND,
 	PROTOCOL_NOT_FOUND,
 	ITEM_NOT_FOUND,
+	PROTOCOL_ALREADY_EXIST,
 	TRANSPORTATION_NOT_FOUND,
 	FORBIDDEN,
 	ITEM_ALREADY_EXISTS,
