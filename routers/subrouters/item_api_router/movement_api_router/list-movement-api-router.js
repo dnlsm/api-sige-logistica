@@ -4,8 +4,8 @@ const express = require('express')
 const router = express.Router()
 
 // importando utilitários
-const {SELECT, INSERT_INTO} = require('../../../utils/db-connect')
-const {MISSING_PARAMETERS,INTERNAL_SERVER_ERROR,NO_MOVEMENTS_FOUND} = require('../../../utils/error-messages')
+const {SELECT, INSERT_INTO} = require('../../../../utils/db-connect')
+const {MISSING_PARAMETERS,INTERNAL_SERVER_ERROR,NO_MOVEMENTS_FOUND} = require('../../../../utils/error-messages')
 
 
 router.get('/', (req,res)=>{
