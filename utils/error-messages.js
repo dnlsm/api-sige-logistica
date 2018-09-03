@@ -52,6 +52,16 @@ const FORBIDDEN =
 	{
 		msg : "Forbidden",
 		status_code : 403
+  }
+
+const ITEM_ALREADY_EXISTS =
+	{
+		msg : "Item already exists"
+	}
+
+const NO_MOVEMENTS_FOUND =
+	{
+		msg : "No movements found for this item"
 	}
 // IMPORTANTE: Exportar mensagens
 module.exports =
@@ -64,5 +74,7 @@ module.exports =
 	PROTOCOL_NOT_FOUND,
 	ITEM_NOT_FOUND,
 	TRANSPORTATION_NOT_FOUND,
-	FORBIDDEN
+	FORBIDDEN,
+	ITEM_ALREADY_EXISTS,
+	NO_MOVEMENTS_FOUND
 }
