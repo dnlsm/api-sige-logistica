@@ -14,7 +14,7 @@ router.get('/', (req,res)=>{
 			["item_code", item_code]
 	])
 	.exec()
-	.oneOne((result)=>{
+	.onOne((result)=>{
 			SELECT('*', 'TRANSPORTATION_MOVEMENT',[
 				["fk_movement_item_code", item_code]
 			])
