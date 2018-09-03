@@ -18,7 +18,6 @@ const INTERNAL_SERVER_ERROR =
 		status_code : 500
 	}
 
-
 const MISSING_PARAMETERS =
 	{
 		msg : "Missing parameters",
@@ -49,6 +48,11 @@ const TRANSPORTATION_NOT_FOUND =
 		status_code: 400
 	}
 
+const FORBIDDEN = 
+	{
+		msg : "Forbidden",
+		status_code : 403
+	}
 // IMPORTANTE: Exportar mensagens
 module.exports =
 {
@@ -59,5 +63,6 @@ module.exports =
 	USER_NOT_FOUND,
 	PROTOCOL_NOT_FOUND,
 	ITEM_NOT_FOUND,
-	TRANSPORTATION_NOT_FOUND
+	TRANSPORTATION_NOT_FOUND,
+	FORBIDDEN
 }
