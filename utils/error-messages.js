@@ -47,7 +47,10 @@ const ITEM_ALREADY_EXISTS =
 	{
 		msg : "Item already exists"
 	}
-
+const NO_MOVEMENTS_FOUND =
+	{
+		msg : "No movements found for this item"
+	}
 // IMPORTANTE: Exportar mensagens
 module.exports =
 {
@@ -58,5 +61,6 @@ module.exports =
 	USER_NOT_FOUND,
 	PROTOCOL_NOT_FOUND,
 	ITEM_NOT_FOUND,
-	ITEM_ALREADY_EXISTS
+	ITEM_ALREADY_EXISTS,
+	NO_MOVEMENTS_FOUND
 }
