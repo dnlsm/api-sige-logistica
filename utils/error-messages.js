@@ -18,7 +18,6 @@ const INTERNAL_SERVER_ERROR =
 		status_code : 500
 	}
 
-
 const MISSING_PARAMETERS =
 	{
 		msg : "Missing parameters",
@@ -43,10 +42,23 @@ const PROTOCOL_NOT_FOUND =
 		status_code: 400
 	}
 
+const TRANSPORTATION_NOT_FOUND =
+	{
+		msg : "Missing parameters",
+		status_code: 400
+	}
+
+const FORBIDDEN = 
+	{
+		msg : "Forbidden",
+		status_code : 403
+  }
+
 const ITEM_ALREADY_EXISTS =
 	{
 		msg : "Item already exists"
 	}
+
 const NO_MOVEMENTS_FOUND =
 	{
 		msg : "No movements found for this item"
@@ -61,6 +73,8 @@ module.exports =
 	USER_NOT_FOUND,
 	PROTOCOL_NOT_FOUND,
 	ITEM_NOT_FOUND,
+	TRANSPORTATION_NOT_FOUND,
+	FORBIDDEN,
 	ITEM_ALREADY_EXISTS,
 	NO_MOVEMENTS_FOUND
 }
