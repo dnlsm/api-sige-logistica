@@ -7,9 +7,10 @@ Vue.use(VueRouter)
 import App from '../app.vue'
 import Home from '../views/home_view.vue'
 import Login from '../views/login_view.vue'
-import Transports from '../views/transportes_view.vue'
+import Transports from '../views/transports_view.vue'
 import Items from '../views/items_view.vue'
 import Protocols from '../views/protocols_view.vue'
+import Users from '../views/user_view.vue'
 
 
 var routes	=
@@ -37,6 +38,10 @@ var routes	=
 							{
 								path: 'protocols',
 								component: Protocols
+							},
+							{
+								path: 'users',
+								component: Users
 							}
 
 						]

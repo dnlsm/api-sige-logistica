@@ -14,7 +14,10 @@ var db_conf = 	JSON.parse(	fs.readFileSync(
 		function connect_db(){ return mysql.createConnection(db_conf) }
 		function disconnect_db(connection){ connection.end() }
 		function dispatch_sql(sql_string, callback){ 
-			return connect_db().query(sql_string, callback)
+			connection = connect_db()
+			connection.query(sql_string, callback)
+			disconnect_db(connection)
+			return
 		}
 
 // SQL type constructor

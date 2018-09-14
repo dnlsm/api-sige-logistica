@@ -13,10 +13,10 @@
 
 	export default {
 		data: ()=>({
-				page_name: "Home"
+				page_name: "Transports"
 			}),
 		props: { objects: Array},
-		mixins: [eligible_objects("Home")],
+		mixins: [eligible_objects("TRANSPORTATION")],
 		computed: {}
 
 	}

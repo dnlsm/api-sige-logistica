@@ -13,11 +13,10 @@
 
 	export default {
 		data: ()=>({
-				page_name: "Items",
-				//eligible_type: "ITEM",
+				page_name: "Protocols"
 			}),
 		props: { objects: Array},
-		mixins: [eligible_objects("ITEM")],
+		mixins: [eligible_objects("PROTOCOL")],
 		computed: {}
 
 	}

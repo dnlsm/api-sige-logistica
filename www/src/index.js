@@ -1,9 +1,7 @@
 import Vue from 'vue'
 
-// import VueResource from 'vue-resource'
-
-
-// Vue.use(VueResource)
+import VueResource from 'vue-resource'
+Vue.use(VueResource)
 
 // import { library } from '@fortawesome/fontawesome-svg-core'
 // import { faCoffee } from '@fortawesome/free-solid-svg-icons'
@@ -25,22 +23,22 @@ const app = new Vue({
 	store
 })
 
-// var token = localStorage.getItem('token')
-// if(token){
-// 	app.$http.get(`/api/validate?token=${token}`)
-// 	.then(
-// 		(response)=>{
-// 			response = response.body
-// 			if (response.code === 200){
-// 				store.commit('login')
-// 			}
-// 		},
-// 		(error)=>{
-// 			localStorage.removeItem("token")
-// 		}
-// 	)
+var token = localStorage.getItem('token')
+if(token){
+	app.$http.get(`/api/inner?token=${token}`)
+	.then(
+		(response)=>{
+			response = response.body
+			if (response.code === 200){
+				store.commit('login')
+			}
+		},
+		(error)=>{
+			localStorage.removeItem("token")
+		}
+	)
 
-// }
+}
 
 app.$mount('#app')
 

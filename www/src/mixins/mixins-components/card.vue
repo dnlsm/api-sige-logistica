@@ -2,57 +2,56 @@
 	<div class="card" :class="{ 'is-selected':isSelected}">
 		<a 	class="card-header"
 			v-on:click="toogleSelection">
-			<div class="card-header-title">
-				{{object.name}}
-			</div>
+			<div class="card-header-title" v-html="header"/>
 			<span class="card-header-icon">
 				<transition name="v-select-check">
-					<span class="icon " v-show="inSelection">
+					<span class="icon " v-show="state.inSelectionMode">
 								<i 	
 									:key="1"
-									:class="{fas: inSelection && isSelected}"
+									:class="{fas: state.inSelectionMode && isSelected}"
 									class="far fa-check-circle">
 								</i>
 					</span>
 				</transition>
 			</span>
 		</a>
-		<div class="card-content v-card-content">
-			Teste
+		<div class="card-content v-card-content" v-html="content">
 		</div>
 		<footer class="card-footer">
 			<a 	class="card-footer-item"
-				:class="{'disabled':inSelection}">Retirar</a>
-			<a 	class="card-footer-item" 
-				:class="{'disabled':inSelection}"
-				v-on:click="detail">Detalhes</a>
+				:class="{'disabled':state.inSelectionMode}"
+				v-for="option in buttons"
+				v-html="option.caption"
+				v-on:click="button_click(option)"/>
 		</footer>
-
 	</div>
 </template>
 
 <script type="text/javascript">
-
-	import event_emiter from '../mixins/event-handler'
 	export default {
 		data: () => (
 			{
-				isSelected: false,
+				isSelected: false
 			}
 		),
-		props: ['object', 'inSelection'],
+		props: ['object',
+				'state',
+				'buttons',
+				'header',
+				'content'],
 		mixins: [event_emiter],
 		methods:{
 			toogleSelection(){
 				var vm = this
 				vm.isSelected = !vm.isSelected
-				if (vm.isSelected)
-					vm.emitEvent('SELECT_ITEM')
-				else
-					vm.emitEvent('DESELECT_ITEM')
+				// if (vm.isSelected)
+				// 	vm.emitEvent('HEADER_CLICK','SELECT_ITEM')
+				// else
+				// 	vm.emitEvent('HEADER_CLICK','DESELECT_ITEM')
 			},
-			detail(){
-				this.emitEvent('OPEN_MODAL', 'detail')
+			button_click(option){
+				if (option.onClick)
+					option.onClick(object)
 			}
 		}
 	}
