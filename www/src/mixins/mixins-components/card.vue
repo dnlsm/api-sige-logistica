@@ -20,14 +20,16 @@
 		<footer class="card-footer">
 			<a 	class="card-footer-item"
 				:class="{'disabled':state.inSelectionMode}"
-				v-for="option in buttons"
-				v-html="option.caption"
-				v-on:click="button_click(option)"/>
+				v-for="(option, index) in buttons"
+				v-html="(option.draw||rendererOptions.defaultCard.defaultButton.draw)(option, index)"
+				v-on:click="button_click(option,index)"/>
 		</footer>
 	</div>
 </template>
 
 <script type="text/javascript">
+	import event_handler from '../event-handler'
+
 	export default {
 		data: () => (
 			{
@@ -35,23 +37,27 @@
 			}
 		),
 		props: ['object',
-				'state',
-				'buttons',
 				'header',
+				'state',
+				'rendererOptions',
+				'buttons',
 				'content'],
-		mixins: [event_emiter],
+		mixins: [event_handler],
 		methods:{
 			toogleSelection(){
 				var vm = this
 				vm.isSelected = !vm.isSelected
-				// if (vm.isSelected)
-				// 	vm.emitEvent('HEADER_CLICK','SELECT_ITEM')
-				// else
-				// 	vm.emitEvent('HEADER_CLICK','DESELECT_ITEM')
+				if (vm.isSelected){
+					vm.$emit('selected')
+					vm.emitEvent('SELECT_ITEM')
+				}
+				else{
+					vm.$emit('deselected')
+					vm.emitEvent('DESELECT_ITEM')
+				}
 			},
-			button_click(option){
-				if (option.onClick)
-					option.onClick(object)
+			button_click(option, index){
+				(option.onClick || this.rendererOptions.defaultCard.defaultButton.onClick)(option, index)
 			}
 		}
 	}

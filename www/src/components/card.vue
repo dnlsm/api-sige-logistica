@@ -45,12 +45,13 @@
 		mixins: [event_emiter],
 		methods:{
 			toogleSelection(){
+				console.log('toogle Selection')
 				var vm = this
 				vm.isSelected = !vm.isSelected
 				if (vm.isSelected)
-					vm.emitEvent('HEADER_CLICK','SELECT_ITEM')
+					vm.emitEvent('SELECT_ITEM')
 				else
-					vm.emitEvent('HEADER_CLICK','DESELECT_ITEM')
+					vm.emitEvent('DESELECT_ITEM')
 			},
 			button_click(option){
 				if (option.onClick)

@@ -1,23 +1,34 @@
 <template>
-	
+	<div>
+			{{doptions}}
+		<card-view :rendererOptions="doptions"></card-view>
+	</div>
 </template>
 
 <script type="text/javascript">
 	require('../other/array-remove-by-name')
 	import {eligible_objects} from '../mixins/eligible-objects'
-	import card_view from '../mixins/card-view'
+	import card_view from '../mixins/card-view.vue'
 	import Item from '../components/card.vue'
 	export default {
-		data: ()=>({
-				buttons:[
-					{
-						caption: "Botão",
-						type: "TEST BUTTON"
+		data: ()=>{
+			return{
+				doptions:{
+					tools : [{ onClick: (obj, index)=> console.log('TESTE')},{}],
+					cards : [{}],
+					toolbar:{
+						draw: () => "<i>Tool</i>"
+					},
+					card:{
 					}
-				]
-			}),
+				}
+			}
+		},
+		components: {
+			'card-view':card_view
+		},
 		props: { objects: Array},
-		mixins: [eligible_objects("USER"), card_view],
+		mixins: [eligible_objects("USER")],
 		methods: {
 			event(eventName, data, obj){
 				console.log('Event '+ eventName)
