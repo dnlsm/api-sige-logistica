@@ -8,7 +8,7 @@
 
 <script type="text/javascript">
 	
-	import {eligible_objects} from '../mixins/eligible-objects'
+	import eligible_objects from '../mixins/eligible-objects'
 	import Item from '../components/item.vue'
 
 	export default {

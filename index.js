@@ -20,7 +20,7 @@ var api_router = require('./routers/api-router')
 
 
 
-
+	app.use((req,res,next)=> {console.time('request'); next()})
 
 	// Configura Middleware para webpack com hot-reload
 	app.use(require("webpack-dev-middleware")(compiler, {
@@ -29,6 +29,7 @@ var api_router = require('./routers/api-router')
 	app.use(require("webpack-hot-middleware")(compiler, {
 		log: console.log, path: '/__webpack_hmr', heartbeat: 1 * 1000
 	}))
+	app.use((req,res,next)=> {console.timeEnd('request'); next()})
 
 	// Middleware para rota /api
 	app.use('/api', api_router)

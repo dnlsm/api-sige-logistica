@@ -1,55 +1,69 @@
 <template>
 	<div>
-		{{JSON.stringify(mergedRendererOptions)}}
+		<!-- Filter -->
+		<div class="field search">
+			<div class="control has-icons-left has-icons-right">
+				<input type="text" class="input" :placeholder="mergedRendererOptions.defaultFilter.placeholder" v-model="filterInput"/>
+				<span class="icon is-small is-left">
+						<i class="fas" :class="mergedRendererOptions.defaultFilter.icon"></i>
+				</span>
+			</div>
+		</div>
+		<!-- ToolBar -->
 		<div class="columns v-toolbar" v-if="mergedRendererOptions.tools.length > 0">
 			<transition name="toolbar">
 				<div v-if="state.inSelectionMode" class="box column">
 					<div class="columns">	
-						<a
+							<a
 							v-for="(tool, index) in mergedRendererOptions.tools"
 							class="navbar-item column has-text-centered"
-							v-html="(tool.draw||mergedRendererOptions.defaultToolbar.defaultTool.draw)(tool,index)"
-							v-on:click="(tool.onClick||mergedRendererOptions.defaultToolbar.defaultTool.onClick)(tool,index)"
+							v-html="(tool.draw||mergedRendererOptions.defaultToolbar.defaultTool.draw)(tool, index, api)"
+							v-on:click="(tool.onClick||mergedRendererOptions.defaultToolbar.defaultTool.onClick)(tool, index, api)"
 							/>
 					</div>
 				</div>
 			</transition>
 		</div>
-		<br>
-		<br>
-		<div >
+		<!-- Hero -->
+		<section class="hero is-small" v-if="mergedRendererOptions.defaultHero.enabled">
+			<div class="hero-body">
+				<div class="container">
+					<h1 class="title" v-html="mergedRendererOptions.defaultHero.defaultTitle.draw()">
+					</h1>
+					<h2 class="subtitle" v-html="mergedRendererOptions.defaultHero.defaultSubtitle.draw()">
+					</h2>
+				</div>
+			</div>
+		</section>
+		<br/>
+		<br/>
+		<!-- Cards -->
+		<div>
 			<transition-group
-				enter-active-class="animated fadeIn"
-				leave-active-class="animated fadeOut"
 				:appear="true"
 				tag="div"
+				name="v-card"
 				class="columns is-multiline">
-				<div :key="index" v-for="(object, index) in mergedRendererOptions.cards" class="column is-3">
+				<div :key="index" v-for="(object, index) in mergedRendererOptions.cards" class="column is-4" v-if="(mergedRendererOptions.defaultFilter.onFilter)(object, index, filterInput)">
 						<card
 							:rendererOptions="mergedRendererOptions"
 							:buttons="mergedRendererOptions.buttons"
 							:object="object"
 							:state="state"
-							:header="(object.header||mergedRendererOptions.defaultCard.defaultHeader).draw()"
-							:content="(object.content||mergedRendererOptions.defaultCard.defaultContent).draw()"
-							v-on:selected="(object.onSelected||mergedRendererOptions.defaultCard.onSelected)(object,index)"
-							v-on:deselected="(object.onDeselected||mergedRendererOptions.defaultCard.onDeselected)(object,index)"
+							:header="(object.header||mergedRendererOptions.defaultCard.defaultHeader).draw(object, index, api)"
+							:content="(object.content||mergedRendererOptions.defaultCard.defaultContent).draw(object, index, api)"
+							v-on:selected="(object.onSelected||mergedRendererOptions.defaultCard.onSelected)(object, index, api)"
+							v-on:deselected="(object.onDeselected||mergedRendererOptions.defaultCard.onDeselected)(object, index, api)"
 							v-on:event="event">
 						</card>
 				</div>
 			</transition-group>
-			<modal
-				:class="{'is-active': modal.is_active}"
-				v-on:event="event"
-				:data="modal.data">
-			</modal>
 		</div>
 	</div>
 </template>
 <script type="text/javascript">
 	
 import card from './mixins-components/card.vue'
-import modal from './mixins-components/modal.vue'
 import merge from 'deepmerge'
 export default
 	{
@@ -64,12 +78,12 @@ export default
 
 		data: ()=>({
 			selectedItems : [],
-			modal: {
-				is_active: false,
-				data : null
-			},
 			toolbar: {
 				is_active: false,
+			},
+			filterInput: '',
+			api: {
+					selectAll: function(){ console.log('selectAll')}
 			},
 			defaultRendererOptions :
 				{
@@ -79,16 +93,20 @@ export default
 
 					defaultToolbar: {
 						defaultTool : {
-							onClick: function (obj, index) {console.log(`Deafult Tool ${index} Click`)},
+							onClick: function (obj, index) {console.log(`Default Tool ${index+1} Click`)},
 							draw: function (obj, index) { return `<i>Tool ${index+1}</i>`}
 						}
+					},
+					defaultFilter:{
+						placeholder: 'Search',
+						onFilter: function (obj, index, keyword) { console.log('FILTROOO'); return true},
+						icon: 'fa-search'
 					},
 					defaultCard: {
 						onSelected : (obj, index)=> console.log(`Card ${index+1} Selected`),
 						onDeselected: (obj, index)=> console.log(`Card ${index+1} Deselected`),
-
 						defaultButton: {
-							onClick : (obj, index)=> console.log(`Button Click ${index+1}`),
+							onClick : (obj, button, index)=> console.log(`Button Click ${index+1}`),
 							draw : (obj, index) => `Button ${index+1}`
 						},
 
@@ -101,10 +119,19 @@ export default
 							onClick : () => console.log('Body Click'),
 							draw : () => "<h2>Body</h2>"
 						}
+					},
+					defaultHero: {
+						enabled: true,
+						defaultTitle: {
+							draw: ()=> `Title`
+						},
+						defaultSubtitle: {
+							draw: ()=> ``
+						}
 					}
 				}
 		}),
-		components: {card , modal},
+		components: {card},
 		methods:{
 			event: function(eventName, eventData, obj){
 				console.log(`eventName ${eventName}`)
@@ -121,10 +148,7 @@ export default
 				if (state) 	this.selectedItems.push(obj)
 				else 		this.selectedItems.removeByName(obj)
 			},
-			toggle_modal(obj, state){
-				this.modal.data = obj
-				this.modal.is_active = state
-			}
+
 		},
 		computed:{
 			state: function(){
@@ -134,6 +158,10 @@ export default
 			},
 			mergedRendererOptions: function(){
 				return merge(this.defaultRendererOptions, this.rendererOptions)
+			},
+			filteredCards: function(){
+				console.log('FILTER')
+
 			}
 		},
 		mounted (){
@@ -145,11 +173,32 @@ export default
 
 
 <style type="text/css">
-	.v-toolbar {
+	.v-card-move{
+		transition: all 1s;
+	}
+	.v-card-item{
+		transition: all 1s;
+	}
+
+	.v-card-leave-active{
 		position: absolute;
-		z-index: 1 !important;
+		transition: all .5s;
+		z-index: -1
+	}
+	.v-card-enter-active{
+		transition: all .5s;
+	}
+	.v-card-enter, .v-card-leave-to{
+		opacity: 0;
+		transform: scale(0.1);
+	}
+
+
+	.v-toolbar {
+		position: fixed;
 		left: 50%;
   		transform: translateX(-50%);
+  		z-index: 1;
 	}
 	.toolbar-enter-active, .toolbar-leave-active {
 		transition: all .5s;
@@ -157,5 +206,23 @@ export default
 	.toolbar-enter, .toolbar-leave-to{
 		opacity: 0;
 		transform: translateY(-20px);
+	}
+
+	.search {
+		width: 100%;
+		padding-right: 0px;
+		padding-left: auto;
+		position: relative;
+		right: 0px;
+		align-content: right;
+		height: auto;
+
+	}
+
+	.search div {
+		width: 30%;
+		position:  relative !important;
+		right: 0px !important;
+		left: auto;
 	}
 </style>

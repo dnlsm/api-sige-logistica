@@ -14,7 +14,7 @@ Vue.use(VueResource)
 
 import router from './router'
 import store from './store'
-import bulma from './style/main.scss'
+//import bulma from './style/main.scss'
 //require('./style/main.scss')
 
 /* eslint-disable no-new */

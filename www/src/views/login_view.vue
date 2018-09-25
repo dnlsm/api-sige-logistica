@@ -1,6 +1,6 @@
 <template>
 	<div class="">
-		<section class="container ">
+		<section class="container">
 			<div class="columns is-centered">
 				<div class="column is-3">
 					<div class="box">
@@ -9,13 +9,18 @@
 						</div>
 						<br><br>
 						<div class="has-text-centered">
-							Login
+							Entrar
 						</div>
 						<br>
 						<div class="">
 							<div class="field">
 								<div class="control has-icons-left">
-									<input type="text" name="username" placeholder="Digite o nome de usuário" class="input is-rounded" v-model="credentials.user">
+									<input  type="text"
+											name="username"
+											placeholder="Digite o nome de usuário"
+											class="input is-rounded"
+											v-model="credentials.user"
+											@keyup.enter="$refs.submit.click()">
 									<span class="icon is-small is-left">
 										<i class="fas fa-user"></i>
 									</span>
@@ -24,7 +29,13 @@
 							<br>
 							<div class="field">
 								<div class="control has-icons-left">
-									<input type="password" name="password" placeholder="Digite a senha" class="input is-rounded" v-model="credentials.pwd">
+									<input  type="password"
+											name="password"
+											ref="password"
+											placeholder="Digite a senha"
+											class="input is-rounded"
+											v-model="credentials.pwd"
+											@keyup.enter="$refs.submit.click()">
 									<span class="icon is-small is-left">
 										<i class="fas fa-lock"></i>
 									</span>
@@ -32,7 +43,7 @@
 							</div>
 							<br>
 							<div class="columns is-centered">
-								<a class="button" v-bind:class="state" v-on:click='login(credentials)' >Entrar</a>
+								<a class="button" ref="submit" v-bind:class="state" @click='login(credentials)'>Entrar</a>
 							</div>
 						</div>
 						<br>
@@ -89,5 +100,9 @@
 </script>
 
 <style type="text/css">
+
+.box {
+	border-radius: 1px !important;
+}
 	
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="card" :class="{ 'is-selected':isSelected}">
+	<div class="card is-flat" :class="{ 'is-selected':isSelected}">
 		<a 	class="card-header"
 			v-on:click="toogleSelection">
 			<div class="card-header-title" v-html="header"/>
@@ -7,7 +7,7 @@
 				<transition name="v-select-check">
 					<span class="icon " v-show="state.inSelectionMode">
 								<i 	
-									:key="1"
+									:key="header"
 									:class="{fas: state.inSelectionMode && isSelected}"
 									class="far fa-check-circle">
 								</i>
@@ -57,7 +57,7 @@
 				}
 			},
 			button_click(option, index){
-				(option.onClick || this.rendererOptions.defaultCard.defaultButton.onClick)(option, index)
+				(option.onClick || this.rendererOptions.defaultCard.defaultButton.onClick)(this.object, option, index)
 			}
 		}
 	}
@@ -66,7 +66,6 @@
 <style lang="scss">
 
 	.card {
-		border-radius: 10px;
 		overflow: hidden;
 	}
 
