@@ -10,9 +10,7 @@ const {TRANSPORTATION_NOT_FOUND,MISSING_PARAMETERS,INTERNAL_SERVER_ERROR} = requ
 router.get('/', (req,res)=>{
 	SELECT('*', 'TRANSPORTATION')
 	.exec()
-	.onOne((result)=>{
-		result = result[0]
-
+	.onAny((results)=>{
 		res.json(	{
 						msg	: "Transportation found",
 						status_code	: 200,

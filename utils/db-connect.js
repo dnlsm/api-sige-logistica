@@ -33,9 +33,10 @@ var db_conf = 	JSON.parse(	fs.readFileSync(
 			var onOne_callback = null
 			var onZero_callback = null
 			var onMoreThanOne_callback = null
-
+			console.time('SQL_EXEC')
 			dispatch_sql(this.sql_string,(error,results,fields)=>{
 				//
+				console.timeEnd('SQL_EXEC')
 				if (error){
 					if (error_callback)
 						return error_callback(error)
