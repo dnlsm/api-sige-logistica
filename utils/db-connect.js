@@ -136,11 +136,8 @@ function INSERT_INTO(table, record){
 //				e.g. [['field1','comparative1'],['field2','compartive2'],..]
 //					obs: operador lógico AND é atribuido ao concatenar array em string
 //			null para não ter nenhuma comparação WHERE
-function SELECT(fields, table, where){
+function SELECT(fields='*', table, where='1'){
 	var sql_string = 'SELECT $fields FROM $table WHERE $where'
-
-	if(!where)
-		where = '1'
 
 	if(fields.constructor == Array)
 		fields = fields.join(',')
@@ -168,6 +165,41 @@ function SELECT(fields, table, where){
 	return new SQL(sql_string)
 }
 
+function UPDATE(table, record, where='1'){
+	var sql_string = 'UPDATE $table SET $record WHERE $where'
+
+	if(record.constructor == Array)
+		record = record
+					.map((el)=>{
+						if (el.constructor == Array){
+							if(el[1].constructor == String)
+								el[1] = `"${el[1]}"`
+							return el.join('=')
+						}
+						return el
+					})
+					.join(',')
+
+	if(where.constructor == Array)
+		where = where
+					.map((el)=>{
+						if (el.constructor == Array){
+							if(el[1].constructor == String)
+								el[1] = `"${el[1]}"`
+							return el.join('=')
+						}
+						return el
+					})
+					.join(' AND ')
+
+	sql_string = sql_string
+						.replace('$record', record)
+						.replace('$table', table)
+						.replace('$where', where)
+
+	return new SQL(sql_string)
+}
+
 
 // Exporting functions
-module.exports = { SELECT, INSERT_INTO }
+module.exports = { SELECT, INSERT_INTO, UPDATE}
