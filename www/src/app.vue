@@ -1,74 +1,105 @@
 <template>
 	<div>
-		<div class="navbar has-shadow">
-			<div class="navbar-brand">
-				<a class="navbar-burger">
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-					<span aria-hidden="true"></span>
-				</a>
-			</div>
-			<div class="navbar-menu">
-				<div class="navbar-start">
-					<router-link
-							tag="a"
-							to="/"
-							class="navbar-item"
-							:class="{'is-selected-tab': $router.currentRoute.path == '/'}">
-						Inicio
-					</router-link>
-					<router-link
-							tag="a"
-							to="/items"
-							class="navbar-item"
-							:class="{'is-selected-tab': $router.currentRoute.path == '/items'}">
-						Amostras
-					</router-link>
-					<router-link 
-							tag="a"
-							to="/transports"
-							class="navbar-item"
-							:class="{'is-selected-tab': $router.currentRoute.path == '/transports'}">
-						Transportes
-					</router-link>
-					<router-link
-							tag="a"
-							to="/protocols"
-							class="navbar-item"
-							:class="{'is-selected-tab': $router.currentRoute.path == '/protocols'}">
-						Protocolos
-					</router-link>
-					<router-link
-							tag="a"
-							to="/users"
-							class="navbar-item"
-							:class="{'is-selected-tab': $router.currentRoute.path == '/users'}">
-						Usuários
-					</router-link>
+		<div class="navbar is-spaced">
+			<div class="container">
+				<div class="navbar-brand">
+					<a class="navbar-burger">
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+						<span aria-hidden="true"></span>
+					</a>
 				</div>
-				<div class="navbar-end">					
-					<router-link
-							tag="p"
-							to="/login"
-							class="navbar-item"
-							:class="{'is-selected-tab': $router.currentRoute.path == '/login'}">
-						<a href="" class="button">
-						Entrar
-						</a> 
-					</router-link>
-				</div>
+				<div class="navbar-menu">
+					<div class="navbar-start">
+						<router-link
+								tag="span"
+								to="/"
+								class="navbar-item"
+								
+								>
+							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/'}">
+								Inicio
+							</a>
+						</router-link>
+						<router-link
+								tag="span"
+								to="/items"
+								class="navbar-item"
+								>
+							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/items'}">
+								Amostras
+							</a>
+						</router-link>
+						<router-link 
+								tag="span"
+								to="/transports"
+								class="navbar-item"
+								>
+							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/transports'}">
+								Transportes
+							</a>
+						</router-link>
+						<router-link
+								tag="span"
+								to="/protocols"
+								class="navbar-item"
+								>
+							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/protocols'}">
+								Protocolos
+							</a>
+						</router-link>
+						<router-link
+								tag="span"
+								to="/users"
+								class="navbar-item"
+								>
+							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/users'}">
+								Usuários
+							</a>
+						</router-link>
+					</div>
+					<div class="navbar-end">					
+						<router-link
+								tag="span"
+								to="/login"
+								class="navbar-item"
+								>
+							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/login'}">
+								Entrar
+							</a> 
+						</router-link>
+					</div>
+				</div>	
 			</div>
 		</div>
 		<progress class="progress is-danger is-flat is-very-small is-animated"
 					:value="progress"
 					max="100"
 					:class="{'hide-progress-bar':!inLoading}"></progress>
-		{{progress}}
 		<br>
-		<keep-alive>
-			<router-view class="container" :objects="objects" v-if="!inLoading">
+<!-- 		<keep-alive> -->
+ 			<router-view class="container" :objects="objects" v-if="!inLoading" :currentUser="currentUserData">
 			</router-view>
-		</keep-alive>
+<!-- 		</keep-alive> -->
+		<div class="container" v-if="inLoading">
+			<div class="is-centered has-text-centered">
+					<div class="loading-icon"></div>
+					<br>
+					Carregando...
+				
+			</div>
+		</div>
+		<div class="content">
+		</div>
+		<footer class="footer level">
+			<div class="level-left">
+				<div class="level-item">
+					
+					© 2018 CPqD
+				</div>
+			</div>
+			<div class="level-right"></div>
+		</footer>
 	</div>
 </template>
 <script type="text/javascript">
@@ -76,21 +107,13 @@
 	export default {
 		created() {
 			var _token = localStorage.getItem('token')
-			var vm = this
-			new Promise((compute)=> compute(null))
-				.then(()=> vm.inLoading = true)
-				.then(()=> vm.loadUserData())
-				.catch(()=>console.log('ERRO DE AUTENTICAÇÃO'))
-				.then(()=> console.log('OK'))
-				.then(()=> vm.loadAllUsers())
-				.then(()=> vm.loadAllItems())
-				.then(()=> vm.loadAllTransportations())
-				.then(()=> vm.loadAllProtocols())
-				.catch(()=>console.log('ERRO NÃO IDENTIFICADO'))
-				.then(()=> vm.inLoading = false)
+				this.loadData()
+			if (_token !== null)
+				console.log('CREATED')
 		},
 		data: function(){
 			return {
+				currentUserData: null,
 				inLoading: true,
 				objects: [],
 				loadStatus:{
@@ -128,6 +151,20 @@
 					default:
 				}
 			},
+			loadData: function(){
+				var vm = this
+				new Promise((compute)=> compute(null))
+					.then(()=> vm.inLoading = true)
+					.then(()=> vm.loadUserData())
+					.catch(()=>console.log('ERRO DE AUTENTICAÇÃO'))
+					.then(()=> console.log('OK'))
+					.then(()=> vm.loadAllUsers())
+					.then(()=> vm.loadAllItems())
+					.then(()=> vm.loadAllTransportations())
+					.then(()=> vm.loadAllProtocols())
+					.catch(()=>console.log('ERRO NÃO IDENTIFICADO'))
+					.then(()=> vm.inLoading = false)
+			},
 			loadAllUsers: function (token = localStorage.getItem('token')) {
 				var vm = this
 				return vm.getRequest(`/api/inner/user/list?token=${token}`)
@@ -155,6 +192,7 @@
 			loadUserData: function (token = localStorage.getItem('token')){
 				var vm = this
 				return vm.getRequest(`/api/inner?token=${token}`)
+					.then(response => vm.currentUserData = response.body.return)
 					.then(response => vm.computeProgress('USER_DATA'))
 			},
 			getRequest: function (url) {
@@ -193,8 +231,14 @@
 <style lang="scss">
 @import '~bulma';
 
-.navbar-item{
-	transition: background 0.3s;
+.footer {
+	padding: 20px
+}
+.is-link{
+	color: #202020;
+}
+.is-link:hover{
+	border-bottom: 1px solid #101010
 }
 
 .hide-progress-bar{
@@ -205,10 +249,10 @@
 
 
 .is-selected-tab {
-	background:  lighten($primary, 2%)
+	border-bottom: 1px solid #101010
 }
 .is-selected-tab:hover {
-	background:  lighten($primary, 7%) !important
+	border-bottom: 1px solid #101010
 }
 .is-animated[value]::-webkit-progress-value{
 	transition: width 0.6s !important
@@ -218,6 +262,16 @@
 }
 .is-flat{
 	border-radius: 1px !important
+}
+.loading-icon {
+	animation: spinAround 1000ms infinite linear;
+    border: 5px solid $primary;
+    border-radius: 300000px;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    display: inline-block;
+    height: 5em;
+    width: 5em;
 }
 </style>
 

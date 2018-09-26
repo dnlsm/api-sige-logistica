@@ -11,9 +11,7 @@
 	import eligible_objects from '../mixins/eligible-objects'
 
 	export default {
-		data: ()=>({
-				page_name: "Transports"
-			}),
+		data: ()=>({}),
 		props: { objects: Array},
 		mixins: [eligible_objects("TRANSPORTATION")],
 		computed: {
@@ -52,6 +50,7 @@
 								}
 							},
 							defaultCard:{
+								cardColor: '#f44336',
 								defaultHeader:{
 									draw: (obj, index) =>	`<span class="icon is-small">
 																	<i class="fas fa-truck" aria-hidden="true"></i>
@@ -80,11 +79,11 @@
 									draw : () => `Transportes`
 								},
 								defaultSubtitle:{
-									draw : () => `<i>Mostrando transportes ativos no momento</i>`
+									draw : () => `<i>transportes ativos no momento</i>`
 								}
 							},
 							defaultFilter:{
-								placeholder:"Pesquisar",
+								placeholder:"Pesquisar...",
 								onFilter: (obj, index, key) =>	obj.code.toString().match(new RegExp(key, 'i')) ||
 																obj.protocol.toString().match(new RegExp(key, 'i')) ||
 																obj.from.match(new RegExp(key, 'i')) ||

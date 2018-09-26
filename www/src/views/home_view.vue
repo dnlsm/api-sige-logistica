@@ -1,8 +1,6 @@
 <template>
 	<div>
-		{{page_name}}
-		<br>
-		{{eligible_objects}}
+		{{time}}, <b>{{userFirstName}}</b>!
 	</div>
 </template>
 
@@ -15,9 +13,22 @@
 		data: ()=>({
 				page_name: "Home"
 			}),
-		props: { objects: Array},
+		props: { objects: Array, currentUser: Object},
 		mixins: [eligible_objects("Home")],
-		computed: {}
+		computed: {
+			time: function(){
+				var hours = (new Date()).getHours()
+
+				if (hours >= 6 && hours < 12)
+					return 'Bom dia'
+				if (hours >= 12 && hours < 19)
+					return 'Boa tarde'
+				return 'Boa noite'
+			},
+			userFirstName : function () {
+				return this.currentUser.full_name.match(/^(\w+)\W*/)[1]
+			}
+		}
 
 	}
 </script>

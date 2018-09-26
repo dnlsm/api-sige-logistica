@@ -51,19 +51,18 @@
 								}
 							},
 							defaultCard:{
+								cardColor: '#2196f3',
 								defaultHeader:{
 									draw: (obj, index) =>	`<span class="icon is-small">
 																	<i class="fas fa-box" aria-hidden="true"></i>
 															</span>
 															&nbsp;
-															<b>
-																${obj.name} (Código ${obj.code})
-															</b>`
+																${obj.name} (Código ${obj.code})`
 								},
 								defaultContent:{
 									draw: (obj, index) =>	`
 															<b>Protocolo:&nbsp;</b> ${obj.protocol}</br>
-															<b>Data prevista:&nbsp;</b> </br>
+															${(obj.last_place)?(`<b>Local Atual:&nbsp;</b>${obj.last_place}</br>`):('')}
 															`
 								}
 							},
@@ -76,7 +75,7 @@
 								}
 							},
 							defaultFilter:{
-								placeholder:"Pesquisar",
+								placeholder:"Pesquisar...",
 								onFilter: (obj, index, key) =>	true
 																// obj.code.toString().match(new RegExp(key, 'i')) ||
 																// obj.protocol.toString().match(new RegExp(key, 'i')) ||

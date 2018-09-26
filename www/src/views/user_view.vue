@@ -88,7 +88,7 @@
 											icon: 'fa-trash-alt'
 										}
 									],
-							cards : this.eligible_objects.concat(this.eligible_objects).concat(this.eligible_objects).concat(this.eligible_objects).concat(this.eligible_objects),
+							cards : this.eligible_objects.concat(this.eligible_objects).concat(this.eligible_objects).concat(this.eligible_objects),
 							defaultToolbar:{
 								defaultTool: {
 									draw: (obj, index) => `<span class="icon is-small">
@@ -104,14 +104,13 @@
 								}
 							},
 							defaultCard:{
+								cardColor: "#9c27b0",
 								defaultHeader:{
 									draw: (obj, index) =>	`<span class="icon is-small">
 																	<i class="fas fa-user" aria-hidden="true"></i>
 															</span>
 															&nbsp;
-															<b>
-																${obj.full_name}
-															</b>`
+															${obj.full_name}`
 								},
 								defaultContent:{
 									draw: (obj, index) =>	`<b>Login:&nbsp</b> ${obj.login} </br>
@@ -122,10 +121,13 @@
 							defaultHero:{
 								defaultTitle: {
 									draw : () => `Usuários`
+								},
+								defaultSubtitle: {
+									draw : () => `<i>usuários ativos</i>`
 								}
 							},
 							defaultFilter:{
-								placeholder:'Pesquisa',
+								placeholder:'Pesquisar...',
 								onFilter: (obj, index, key) =>	obj.login.match(new RegExp(key, 'i')) ||
 																obj.full_name.match(new RegExp(key, 'i'))
 							}

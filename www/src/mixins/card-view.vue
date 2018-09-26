@@ -1,14 +1,5 @@
 <template>
 	<div>
-		<!-- Filter -->
-		<div class="field search">
-			<div class="control has-icons-left has-icons-right">
-				<input type="text" class="input" :placeholder="mergedRendererOptions.defaultFilter.placeholder" v-model="filterInput"/>
-				<span class="icon is-small is-left">
-						<i class="fas" :class="mergedRendererOptions.defaultFilter.icon"></i>
-				</span>
-			</div>
-		</div>
 		<!-- ToolBar -->
 		<div class="columns v-toolbar" v-if="mergedRendererOptions.tools.length > 0">
 			<transition name="toolbar">
@@ -35,12 +26,20 @@
 				</div>
 			</div>
 		</section>
+		<!-- Filter -->
+		<div class="field search">
+			<div class="control has-icons-left has-icons-right">
+				<input type="text" class="input" :placeholder="mergedRendererOptions.defaultFilter.placeholder" v-model="filterInput"/>
+				<span class="icon is-small is-left">
+						<i class="fas" :class="mergedRendererOptions.defaultFilter.icon"></i>
+				</span>
+			</div>
+		</div>
 		<br/>
 		<br/>
 		<!-- Cards -->
 		<div>
 			<transition-group
-				:appear="true"
 				tag="div"
 				name="v-card"
 				class="columns is-multiline">
@@ -105,6 +104,7 @@ export default
 					defaultCard: {
 						onSelected : (obj, index)=> console.log(`Card ${index+1} Selected`),
 						onDeselected: (obj, index)=> console.log(`Card ${index+1} Deselected`),
+						cardColor: '#777',
 						defaultButton: {
 							onClick : (obj, button, index)=> console.log(`Button Click ${index+1}`),
 							draw : (obj, index) => `Button ${index+1}`
