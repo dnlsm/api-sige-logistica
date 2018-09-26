@@ -25,7 +25,7 @@ router.get('/', (req,res)=>{
 							status_code: 200,
 							return:
 							result.map((el)=>({
-									type: "Movement",
+									type: "MOVEMENT",
 									delivery: el.movement_delivery_timestamp,
 									receipt: el.movement_receipt_timestamp,
 									deliverer_user: el.fk_movement_deliverer_user_login,
