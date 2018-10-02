@@ -1,81 +1,87 @@
 <template>
 	<div>
-		<div class="navbar is-spaced">
-			<div class="container">
-				<div class="navbar-brand">
-					<a class="navbar-burger">
-						<span aria-hidden="true"></span>
-						<span aria-hidden="true"></span>
-						<span aria-hidden="true"></span>
-					</a>
+		<div class="head">
+			
+			<progress class="progress is-danger is-flat is-very-small is-animated"
+						:value="progress"
+						max="100"
+						:class="{'hide-progress-bar':!inLoading}"></progress>
+			<div class="navbar is-spaced has-shadow">
+				<div class="container">
+					<div class="navbar-brand">
+						<router-link tag="a" class="navbar-item logo-icon" to="/">
+						</router-link>
+						<a class="navbar-burger">
+							<span aria-hidden="true"></span>
+							<span aria-hidden="true"></span>
+							<span aria-hidden="true"></span>
+						</a>
+					</div>
+					<div class="navbar-menu">
+						<div class="navbar-start">
+							<router-link
+									tag="span"
+									to="/"
+									class="navbar-item"
+									
+									>
+								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/'}">
+									Inicio
+								</a>
+							</router-link>
+							<router-link
+									tag="span"
+									to="/items"
+									class="navbar-item"
+									>
+								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/items'}">
+									Amostras
+								</a>
+							</router-link>
+							<router-link 
+									tag="span"
+									to="/transports"
+									class="navbar-item"
+									>
+								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/transports'}">
+									Transportes
+								</a>
+							</router-link>
+							<router-link
+									tag="span"
+									to="/protocols"
+									class="navbar-item"
+									>
+								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/protocols'}">
+									Protocolos
+								</a>
+							</router-link>
+							<router-link
+									tag="span"
+									to="/users"
+									class="navbar-item"
+									>
+								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/users'}">
+									Usuários
+								</a>
+							</router-link>
+						</div>
+						<div class="navbar-end">					
+							<router-link
+									tag="span"
+									to="/login"
+									class="navbar-item"
+									>
+								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/login'}">
+									Entrar
+								</a> 
+							</router-link>
+						</div>
+					</div>	
 				</div>
-				<div class="navbar-menu">
-					<div class="navbar-start">
-						<router-link
-								tag="span"
-								to="/"
-								class="navbar-item"
-								
-								>
-							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/'}">
-								Inicio
-							</a>
-						</router-link>
-						<router-link
-								tag="span"
-								to="/items"
-								class="navbar-item"
-								>
-							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/items'}">
-								Amostras
-							</a>
-						</router-link>
-						<router-link 
-								tag="span"
-								to="/transports"
-								class="navbar-item"
-								>
-							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/transports'}">
-								Transportes
-							</a>
-						</router-link>
-						<router-link
-								tag="span"
-								to="/protocols"
-								class="navbar-item"
-								>
-							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/protocols'}">
-								Protocolos
-							</a>
-						</router-link>
-						<router-link
-								tag="span"
-								to="/users"
-								class="navbar-item"
-								>
-							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/users'}">
-								Usuários
-							</a>
-						</router-link>
-					</div>
-					<div class="navbar-end">					
-						<router-link
-								tag="span"
-								to="/login"
-								class="navbar-item"
-								>
-							<a class="is-link" :class="{'is-selected-tab': $router.currentRoute.path == '/login'}">
-								Entrar
-							</a> 
-						</router-link>
-					</div>
-				</div>	
 			</div>
 		</div>
-		<progress class="progress is-danger is-flat is-very-small is-animated"
-					:value="progress"
-					max="100"
-					:class="{'hide-progress-bar':!inLoading}"></progress>
+
 		<br>
 <!-- 		<keep-alive> -->
  			<router-view class="container" :objects="objects" v-if="!inLoading" :currentUser="currentUserData">
@@ -94,7 +100,6 @@
 		<footer class="footer level">
 			<div class="level-left">
 				<div class="level-item">
-					
 					© 2018 CPqD
 				</div>
 			</div>
@@ -230,17 +235,52 @@
 
 <style lang="scss">
 @import '~bulma';
+.navbar {
+	background: #0D0D0D
+ 	//box-shadow: 0px 1px #DDD
+}
+.navbar-item .is-link{
+	color: #fff !important;
+	
+}
+.navbar-item .is-link:hover{
+	color: #fff !important;
+	border-bottom: 1px solid #fff
+	
+}
+.navbar-item .is-link.is-selected {
+	border-bottom: 1px solid #fff
+}
+
+.navbar-item .is-link.is-selected:hover {
+	border-bottom: 1px solid #fff
+}
+
+.navbar-item.logo-name{
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 24px
+}
+.navbar-item.logo-icon{
+	background: url('/assets/icon_nbg_txt.png');
+	height:60px !important;
+	width: 90px !important;
+	background-size: contain;
+}
+
+
+
+.head {
+	background: #AAA;
+}
 
 .footer {
 	padding: 20px
 }
-.is-link{
-	color: #202020;
-}
-.is-link:hover{
-	border-bottom: 1px solid #101010
-}
 
+.progress{
+	@extend .is-marginless;
+}
 .hide-progress-bar{
 	transition: opacity 0.5s;
 	transition-delay: 1s;
@@ -248,12 +288,6 @@
 }
 
 
-.is-selected-tab {
-	border-bottom: 1px solid #101010
-}
-.is-selected-tab:hover {
-	border-bottom: 1px solid #101010
-}
 .is-animated[value]::-webkit-progress-value{
 	transition: width 0.6s !important
 }

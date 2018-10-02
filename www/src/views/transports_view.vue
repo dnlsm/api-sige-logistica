@@ -56,11 +56,9 @@
 																	<i class="fas fa-truck" aria-hidden="true"></i>
 															</span>
 															&nbsp;
-															<b>
 																${obj.from}
 																<i class="fas fa-arrow-right" aria-hidden="true"></i>
-																${obj.to}
-															</b>`
+																${obj.to}`
 								},
 								defaultContent:{
 									draw: (obj, index) =>	`

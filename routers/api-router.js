@@ -4,8 +4,10 @@ const express = require('express')
 const router = express.Router()
 
 // importando utilitários
-const {SELECT} = require('../utils/db-connect')
+const {SELECT, UPDATE} = require('../utils/db-connect')
 const {INVALID_TOKEN,MISSING_PARAMETERS,INTERNAL_SERVER_ERROR} = require('../utils/error-messages')
+
+require('../utils/date-manipulation')
 
 router.get('/', (req,res)=>{
 	res.end('api-router')
@@ -48,7 +50,11 @@ router.use((req,res,next)=>{
 		console.log(user_credentials)
 		req.user_credentials = user_credentials
 
-		next()
+		var newExpiration = (new Date()).shift(3000000)
+
+		UPDATE('SESSION', [['session_expiration',newExpiration.toMySQL()]],[['session_token', token]]).exec()
+		.then(()=> next())
+		.error(()=> res.json(INTERNAL_SERVER_ERROR))
 	})
 	.onZero(()=> res.json(INVALID_TOKEN))
 	.error(()=> res.json(INTERNAL_SERVER_ERROR))

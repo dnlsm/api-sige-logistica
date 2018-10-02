@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<card-view :rendererOptions="doptions"></card-view>
+		<card-view :rendererOptions="doptions" ref='card-item'></card-view>
 	</div>
 </template>
 
@@ -11,11 +11,28 @@
 
 	export default {
 		data: ()=>({
-				page_name: "Protocols"
+				page_name: "Protocols",
+				hasMultipleProtocolsSelected: false
 			}),
-		props: { objects: Array},
-		mixins: [eligible_objects("ITEM")],
+		props: { objects: Array, currentUser: Object},
+		beforeUpdate: function(){
+			console.log('BEFORE UPDATE ITEM VIEW')
+				this.hasMultipleProtocolsSelected =
+				 	this.$refs['card-item'].selectedItems
+						.map((el)=> el.object.protocol)
+						.reduce((acc, ell)=>{
+							if(acc === true)	return acc
+
+							if(acc === null)	return ell
+
+							if(acc !== ell)		return true
+							else 				return ell
+
+						}, null)
+		},
+		mixins: [eligible_objects("ITEM"),],
 		computed: {
+
 			doptions: function(){
 				var vm = this
 				return	{
@@ -26,27 +43,43 @@
 										],
 							tools : [
 										{
-											name: 'Selecionar Todos',
-											icon: 'fa-check-double',
+											name: 'Transportar',
+											icon: 'fa-truck',
+											color: '#24a1ad',
+											onlyInSelectionMode: true,
+											isVisible: (vm.hasMultipleProtocolsSelected !== true)
+														&& ['ROOT', 'LOGISTIC','LABORATORY'].some((el)=>el == vm.currentUser.category),
+											onClick: (obj, index)=> console.log('TESTE')
+										},
+										{
+											name: 'Selecionar todos',
+											icon: 'fa-clone',
+											color: '#24a1ad',
+											onlyInSelectionMode: true,
+											isVisible: true,
 											onClick: (obj, index)=> console.log('TESTE')
 										},
 										{
 											name: 'Excluir',
-											icon: 'fa-trash-alt'
+											icon: 'fa-trash-alt',
+											color: '#ad2424',
+											onlyInSelectionMode: true,
+											isVisible: ['ROOT', 'LOGISTIC'].some((el)=>el == vm.currentUser.category)
+										},
+										{
+											name: 'Adicionar',
+											icon: 'fa-plus-circle',
+											color: '#24ad2d',
+											onlyInSelectionMode: false,
+											isVisible: ['ROOT', 'LOGISTIC'].some((el)=>el == vm.currentUser.category)
 										}
 									],
 							cards : this.eligible_objects,
 							defaultToolbar:{
 								defaultTool: {
-									draw: (obj, index) => `<span class="icon is-small">
-																	<i class="fas ${obj.icon}" aria-hidden="true"></i>
+									draw: (obj, index) => `<span class="icon is-small" title="${obj.name}">
+																	<i class="fas ${obj.icon} fa-lg" aria-hidden="true" ${(obj.color)?(`style="color:${obj.color}"`):('')}></i>
 															</span>
-															<div style="
-																    	width: 120px;
-																    	overflow: hidden;
-																    	white-space: nowrap;">
-																${obj.name}
-															</div>
 															`
 								}
 							},
@@ -57,7 +90,7 @@
 																	<i class="fas fa-box" aria-hidden="true"></i>
 															</span>
 															&nbsp;
-																${obj.name} (Código ${obj.code})`
+																${obj.name} (N°${obj.code})`
 								},
 								defaultContent:{
 									draw: (obj, index) =>	`

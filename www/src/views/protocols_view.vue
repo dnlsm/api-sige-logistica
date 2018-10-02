@@ -37,7 +37,7 @@
 											icon: 'fa-trash-alt'
 										}
 									],
-							cards : this.eligible_objects,
+							cards : this.eligible_objects.concat(this.eligible_objects).concat(this.eligible_objects),
 							defaultToolbar:{
 								defaultTool: {
 									draw: (obj, index) => `<span class="icon is-small">

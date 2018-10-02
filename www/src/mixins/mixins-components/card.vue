@@ -8,7 +8,7 @@
 			<div class="card-header-title" v-html="header"/>
 			<span class="card-header-icon">
 				<transition name="v-select-check">
-					<span class="icon check-icon" v-show="state.inSelectionMode">
+					<span class="icon check-icon" v-show="state.inSelectionMode && isSelected">
 								<i 	
 									:key="header"
 									:class="{fas: state.inSelectionMode && isSelected}"
@@ -35,11 +35,10 @@
 	import event_handler from '../event-handler'
 
 	export default {
-		data: () => (
-			{
-				isSelected: false,
-			}
-		),
+		data: () => ({
+
+				'isSelected': false
+		}),
 		props: ['object',
 				'header',
 				'state',
@@ -67,11 +66,11 @@
 				vm.isSelected = !vm.isSelected
 				if (vm.isSelected){
 					vm.$emit('selected')
-					vm.emitEvent('SELECT_ITEM')
+					vm.$emit('update:isSelected', true)
 				}
 				else{
 					vm.$emit('deselected')
-					vm.emitEvent('DESELECT_ITEM')
+					vm.$emit('update:isSelected', false)
 				}
 			},
 			button_click(option, index){
@@ -92,10 +91,10 @@
 
 	/* check-icon*/
 			.card .card-header .check-icon {
-				color: #21c3ff;
+				color: #24ad36;
 			}
 			.card.is-selected .card-header .check-icon {
-				color: #22ce00;
+				color: #30db4f;
 			}
 
 	/*card-footer*/

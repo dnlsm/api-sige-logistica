@@ -1,10 +1,8 @@
 <template>
 	<div>
 		<card-view :rendererOptions="doptions"></card-view>
-
-
 		<modal
-			:class="{'is-active': modal.is_active}"
+			:class="{'is-active': true}"
 			v-on:event="event"
 			:data="modal.data">
 		</modal>
@@ -16,7 +14,7 @@
 	require('../other/array-remove-by-name')
 	import eligible_objects from '../mixins/eligible-objects'
 	import cardView from '../mixins/card-view.vue'
-	import modal from '../mixins/mixins-components/modal.vue'
+	import modal from '../components/modal.vue'
 	import Item from '../components/card.vue'
 
 	export default {

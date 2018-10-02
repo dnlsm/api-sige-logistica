@@ -1,20 +1,5 @@
 <template>
 	<div>
-		<!-- ToolBar -->
-		<div class="columns v-toolbar" v-if="mergedRendererOptions.tools.length > 0">
-			<transition name="toolbar">
-				<div v-if="state.inSelectionMode" class="box column">
-					<div class="columns">	
-							<a
-							v-for="(tool, index) in mergedRendererOptions.tools"
-							class="navbar-item column has-text-centered"
-							v-html="(tool.draw||mergedRendererOptions.defaultToolbar.defaultTool.draw)(tool, index, api)"
-							v-on:click="(tool.onClick||mergedRendererOptions.defaultToolbar.defaultTool.onClick)(tool, index, api)"
-							/>
-					</div>
-				</div>
-			</transition>
-		</div>
 		<!-- Hero -->
 		<section class="hero is-small" v-if="mergedRendererOptions.defaultHero.enabled">
 			<div class="hero-body">
@@ -26,13 +11,31 @@
 				</div>
 			</div>
 		</section>
-		<!-- Filter -->
-		<div class="field search">
-			<div class="control has-icons-left has-icons-right">
-				<input type="text" class="input" :placeholder="mergedRendererOptions.defaultFilter.placeholder" v-model="filterInput"/>
-				<span class="icon is-small is-left">
-						<i class="fas" :class="mergedRendererOptions.defaultFilter.icon"></i>
-				</span>
+		<div class="level has-shadow">
+			<div class="level-left">
+				<div class="level-item">
+					<!-- Filter -->
+					<div class="field search">
+						<div class="control has-icons-left has-icons-right">
+							<input type="text" class="input" :placeholder="mergedRendererOptions.defaultFilter.placeholder" v-model="filterInput"/>
+							<span class="icon is-small is-left">
+									<i class="fas" :class="mergedRendererOptions.defaultFilter.icon"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="level-right">
+				<!-- ToolBar -->
+				<a class="level-item"
+						style="padding: 5px" 
+						v-show="tool.isVisible && ((tool.onlyInSelectionMode)?(state.inSelectionMode):(true))"
+						v-for="(tool, index) in mergedRendererOptions.tools"
+						:key="`tool-${index}`"
+						v-html="(tool.draw||mergedRendererOptions.defaultToolbar.defaultTool.draw)(tool, index, api)"
+						v-on:click="(tool.onClick||mergedRendererOptions.defaultToolbar.defaultTool.onClick)(tool, index, api)">
+				</a>
+
 			</div>
 		</div>
 		<br/>
@@ -43,11 +46,14 @@
 				tag="div"
 				name="v-card"
 				class="columns is-multiline">
-				<div :key="index" v-for="(object, index) in mergedRendererOptions.cards" class="column is-4" v-if="(mergedRendererOptions.defaultFilter.onFilter)(object, index, filterInput)">
+				<div :key="`coll-${index}`" v-for="(object, index) in mergedRendererOptions.cards" class="column is-4" v-show="(mergedRendererOptions.defaultFilter.onFilter)(object, index, filterInput)">
 						<card
+							:key="`card_${index}`"
+							:ref="`card_${index}`"
 							:rendererOptions="mergedRendererOptions"
 							:buttons="mergedRendererOptions.buttons"
 							:object="object"
+							v-on:update:isSelected="toggle(index, $event)"
 							:state="state"
 							:header="(object.header||mergedRendererOptions.defaultCard.defaultHeader).draw(object, index, api)"
 							:content="(object.content||mergedRendererOptions.defaultCard.defaultContent).draw(object, index, api)"
@@ -62,21 +68,21 @@
 </template>
 <script type="text/javascript">
 	
-import card from './mixins-components/card.vue'
-import merge from 'deepmerge'
-export default
+	import card from './mixins-components/card.vue'
+	import merge from 'deepmerge'
+	export default
 	{
 		props: 	{ 
 			rendererOptions : 	{
 				type: Object,
 				default: function (){
-					return 	{}
+					return 	{
+					}
 				}
 			}
 		},
 
 		data: ()=>({
-			selectedItems : [],
 			toolbar: {
 				is_active: false,
 			},
@@ -84,6 +90,7 @@ export default
 			api: {
 					selectAll: function(){ console.log('selectAll')}
 			},
+			selectedCount: false,
 			defaultRendererOptions :
 				{
 					tools :[],
@@ -132,9 +139,33 @@ export default
 				}
 		}),
 		components: {card},
+		updated: function(){
+			this.$parent.$forceUpdate()
+		},
+		beforeUpdate: function(){
+				var vm = this
+				console.log("BEFORE UPDATE")
+				console.log("selected Items:")
+				console.log(vm.selectedItems)
+				var count = this.$children[0].$children.reduce((acc, obj, index)=>{
+							if(!obj) return acc
+
+							if (obj.isSelected){
+								return acc+1
+							}
+							return acc
+					},0)
+				this.selectedCount = count
+		},
 		methods:{
+			toggle: function(index, event){
+						console.log("TOGGLE")
+
+					this.$forceUpdate()
+			},
 			event: function(eventName, eventData, obj){
 				console.log(`eventName ${eventName}`)
+				console.log(obj)
 				switch(eventName){
 					case 'SELECT_ITEM':
 						this.toggle_selection(obj, 1)
@@ -145,15 +176,28 @@ export default
 				}
 			},
 			toggle_selection: function (obj, state){
-				if (state) 	this.selectedItems.push(obj)
-				else 		this.selectedItems.removeByName(obj)
-			},
+				if (state) 	obj.isSelected = true
+				else 		obj.isSelected = false
 
+			},
 		},
 		computed:{
+			selectedItems :function(){
+					var vm = this
+					var count = this.$children[0].$children.reduce((acc, obj, index)=>{
+								if(!obj) return acc
+
+								if (obj.isSelected){
+									return acc.concat([obj])
+								}
+								return acc
+						},[])
+					return count
+			},
 			state: function(){
+				var vm = this
 				return	{
-							inSelectionMode : this.selectedItems.length > 0
+							inSelectionMode : (vm.selectedCount> 0)
 						}
 			},
 			mergedRendererOptions: function(){
@@ -173,6 +217,10 @@ export default
 
 
 <style type="text/css">
+	.level.has-shadow{
+		padding-bottom: 20px;
+		box-shadow: 0px 1px #EEE;
+	}
 	.v-card-move{
 		transition: all 1s;
 	}
@@ -220,7 +268,7 @@ export default
 	}
 
 	.search div {
-		width: 30%;
+		width: 100%;
 		position:  relative !important;
 		right: 0px !important;
 		left: auto;
