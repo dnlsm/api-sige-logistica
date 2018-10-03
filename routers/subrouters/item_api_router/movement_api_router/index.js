@@ -9,7 +9,8 @@ const {MISSING_PARAMETERS,INTERNAL_SERVER_ERROR,ITEM_NOT_FOUND,NO_MOVEMENTS_FOUN
 router.get('/', (req,res)=>{
 
 	var item_code = req.query.item_code
-
+	if(!item_code)
+		res.json(MISSING_PARAMETERS)
 	SELECT('*', 'ITEM',[
 			["item_code", item_code]
 	])

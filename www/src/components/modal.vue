@@ -21,6 +21,27 @@
 <script type="text/javascript">
 	export default {
 		props: ['data'],
-		mixins: []
+		mixins: [],
+		props: 	{ 
+			rendererOptions : 	{
+				type: Object,
+				default: function (){
+					return 	{
+					}
+				}
+			}
+		},
+
+		data: ()=>({
+			defaultRendererOptions :
+				{
+					
+				}
+		}),
+		computed: {
+			mergedRendererOptions: function(){
+				return merge(this.defaultRendererOptions, this.rendererOptions)
+			}
+		}
 	}
 </script>

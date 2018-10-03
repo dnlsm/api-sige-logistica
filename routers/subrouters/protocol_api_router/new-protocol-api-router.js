@@ -8,9 +8,9 @@ const {PROTOCOL_ALREADY_EXIST,MISSING_PARAMETERS,INTERNAL_SERVER_ERROR} = requir
 
 
 router.get('/', (req,res)=>{
-	var code 			= req.query.code
-	var name 			= req.query.name
-	var client 			= req.query.client
+	var code 			= req.query.protocol_code
+	var name 			= req.query.protocol_name
+	var client 			= req.query.protocol_client
 	var glab_code 		= req.query.glab_code
 	var sq_code 		= req.query.sq_code
 	var cpqdic_code 	= req.query.cpqdic_code
@@ -26,7 +26,7 @@ router.get('/', (req,res)=>{
 	.exec()
 	.onZero(()=>{
 		var fields = []
-
+	
 		fields.push(['protocol_code',code])
 		fields.push(['protocol_name',name])
 		fields.push(['protocol_client',client])
