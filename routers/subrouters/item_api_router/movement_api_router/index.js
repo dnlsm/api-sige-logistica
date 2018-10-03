@@ -16,7 +16,7 @@ router.get('/', (req,res)=>{
 	])
 	.exec()
 	.onOne((result)=>{
-			SELECT('*', 'TRANSPORTATION_MOVEMENT',[
+			SELECT('*', 'TRANSPORTATION_MOVEMENT INNER JOIN TRANSPORTATION ON fk_transportation_code = transportation_code',[
 				["fk_movement_item_code", item_code]
 			])
 			.exec()
@@ -32,7 +32,9 @@ router.get('/', (req,res)=>{
 									deliverer_user: el.fk_movement_deliverer_user_login,
 									receiver_user: el.fk_movement_receiver_user_login,
 									transportation_code: el.fk_movement_transportation_code,
-									item_code: el.fk_movement_item_code
+									item_code: el.fk_movement_item_code,
+									from: el.fk_transportation_from_place_name,
+									to: el.fk_transportation_to_place_name,
 							}))
 				})
 			})
