@@ -23,7 +23,6 @@
 									tag="span"
 									to="/"
 									class="navbar-item"
-									
 									>
 								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/'}">
 									Inicio
@@ -33,6 +32,7 @@
 									tag="span"
 									to="/items"
 									class="navbar-item"
+									v-if="isAuthorized"
 									>
 								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/items'}">
 									Amostras
@@ -42,6 +42,7 @@
 									tag="span"
 									to="/transports"
 									class="navbar-item"
+									v-if="isAuthorized"
 									>
 								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/transports'}">
 									Transportes
@@ -51,6 +52,7 @@
 									tag="span"
 									to="/protocols"
 									class="navbar-item"
+									v-if="isAuthorized"
 									>
 								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/protocols'}">
 									Protocolos
@@ -60,6 +62,7 @@
 									tag="span"
 									to="/users"
 									class="navbar-item"
+									v-if="isAuthorized"
 									>
 								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/users'}">
 									Usuários
@@ -71,6 +74,17 @@
 									tag="span"
 									to="/login"
 									class="navbar-item"
+									v-if="!isAuthorized"
+									>
+								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/login'}">
+									Entrar
+								</a> 
+							</router-link>					
+							<router-link
+									tag="span"
+									to="/login"
+									class="navbar-item"
+									v-if="isAuthorized"
 									>
 								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/login'}">
 									Entrar
@@ -112,14 +126,14 @@
 	export default {
 		created() {
 			var _token = localStorage.getItem('token')
-				this.loadData()
-			if (_token !== null)
-				console.log('CREATED')
+			if (!_token)
+				return
+			this.loadData()
 		},
 		data: function(){
 			return {
 				currentUserData: null,
-				inLoading: true,
+				inLoading: false,
 				objects: [],
 				loadStatus:{
 					protocol: false,
@@ -162,7 +176,7 @@
 					.then(()=> vm.inLoading = true)
 					.then(()=> vm.loadUserData())
 					.catch(()=>console.log('ERRO DE AUTENTICAÇÃO'))
-					.then(()=> console.log('OK'))
+					.then(()=> vm.$store.commit('login'))
 					.then(()=> vm.loadAllUsers())
 					.then(()=> vm.loadAllItems())
 					.then(()=> vm.loadAllTransportations())
@@ -227,7 +241,10 @@
 				if (vm.loadStatus.userData) i++;
 
 				return (i/5)*100
-			}
+			},
+			isAuthorized () {
+      			return this.$store.state.user.isAuthorized
+    		}
 		}
 	}
 </script>
@@ -236,24 +253,24 @@
 <style lang="scss">
 @import '~bulma';
 .navbar {
-	background: #0D0D0D
+	background: #007ac3;
  	//box-shadow: 0px 1px #DDD
 }
 .navbar-item .is-link{
-	color: #fff !important;
+	color: #eee !important;
 	
 }
 .navbar-item .is-link:hover{
-	color: #fff !important;
-	border-bottom: 1px solid #fff
+	color: #eee !important;
+	border-bottom: 1px solid #eee
 	
 }
 .navbar-item .is-link.is-selected {
-	border-bottom: 1px solid #fff
+	border-bottom: 1px solid #eee
 }
 
 .navbar-item .is-link.is-selected:hover {
-	border-bottom: 1px solid #fff
+	border-bottom: 1px solid #eee
 }
 
 .navbar-item.logo-name{
@@ -262,7 +279,8 @@
 	font-size: 24px
 }
 .navbar-item.logo-icon{
-	background: url('/assets/icon_nbg_txt.png');
+	background: url('/assets/icon_nbg_txt_mono.png');
+	background-repeat: no-repeat;
 	height:60px !important;
 	width: 90px !important;
 	background-size: contain;

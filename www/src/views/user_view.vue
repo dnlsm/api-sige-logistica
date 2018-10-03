@@ -2,7 +2,7 @@
 	<div>
 		<card-view :rendererOptions="doptions"></card-view>
 		<modal
-			:class="{'is-active': true}"
+			:class="{'is-active': false}"
 			v-on:event="event"
 			:data="modal.data">
 		</modal>
@@ -102,7 +102,7 @@
 								}
 							},
 							defaultCard:{
-								cardColor: "#9c27b0",
+								cardColor: "#7540bf",
 								defaultHeader:{
 									draw: (obj, index) =>	`<span class="icon is-small">
 																	<i class="fas fa-user" aria-hidden="true"></i>

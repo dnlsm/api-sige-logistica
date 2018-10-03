@@ -38,7 +38,7 @@
 				return	{
 							buttons : 	[
 											{
-												draw: (obj,  index) => `Ver detalhes`
+												draw: (obj,  index) => `Movimentação`
 											}
 										],
 							tools : [
@@ -84,7 +84,7 @@
 								}
 							},
 							defaultCard:{
-								cardColor: '#2196f3',
+								cardColor: '#407fbf',
 								defaultHeader:{
 									draw: (obj, index) =>	`<span class="icon is-small">
 																	<i class="fas fa-box" aria-hidden="true"></i>

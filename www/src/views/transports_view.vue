@@ -50,7 +50,7 @@
 								}
 							},
 							defaultCard:{
-								cardColor: '#f44336',
+								cardColor: '#bf4040',
 								defaultHeader:{
 									draw: (obj, index) =>	`<span class="icon is-small">
 																	<i class="fas fa-truck" aria-hidden="true"></i>

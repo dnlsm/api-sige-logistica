@@ -30,18 +30,22 @@ var routes	=
 							{
 								path: 'items',
 								component: Items,
+								meta: { authRequired:true }
 							},
 							{
 								path: 'transports',
 								component: Transports,
+								meta: { authRequired:true }
 							},
 							{
 								path: 'protocols',
-								component: Protocols
+								component: Protocols,
+								meta: { authRequired:true }
 							},
 							{
 								path: 'users',
-								component: Users
+								component: Users,
+								meta: { authRequired:true }
 							}
 
 						]
@@ -62,26 +66,6 @@ var routes	=
 
 
 
+var router = new VueRouter({routes})
 
-export default new VueRouter({routes})
-
-
-// router.beforeEach((to, from, next) => {
-// 	const authRequired = to.matched.some((route) => route.meta.auth)
-// 	const onlyToAuth = to.matched.some((route)=> route.meta.noauth)
-// 	const authed = store.state.user.isAuthorized
-// 	console.log('router $$$$$$$$$$$$$$$$$$$$$$$$')
-// 	console.log('from')
-// 	console.log(from)
-// 	console.log('to')
-// 	console.log(to)
-// 	if (authRequired && !authed) {
-// 		next('/login')
-// 	}
-// 	else if(onlyToAuth && authed){
-// 		next('/dash')
-// 	}
-// 	else {
-// 		next()
-// 	}
-// })
+export default router

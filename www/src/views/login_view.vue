@@ -85,6 +85,7 @@
 						if (response.status_code === 200){
 							localStorage.setItem("token", response.return.token)
 							//vm.$store.commit('login')
+							vm.$parent.loadData()
 							vm.$router.push('/')
 						}
 						vm.state['is-loading'] = false

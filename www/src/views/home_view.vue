@@ -1,6 +1,6 @@
 <template>
 	<div>
-		{{time}}, <b>{{userFirstName}}</b>!
+		
 	</div>
 </template>
 

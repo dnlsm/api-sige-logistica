@@ -53,7 +53,7 @@
 								}
 							},
 							defaultCard:{
-								cardColor: '#009688',
+								cardColor: '#bf7540',
 								defaultHeader:{
 									draw: (obj, index) =>	`<span class="icon is-small">
 																	<i class="fas fa-map" aria-hidden="true"></i>

@@ -17,6 +17,19 @@ import store from './store'
 //import bulma from './style/main.scss'
 //require('./style/main.scss')
 
+router.beforeEach((to, from, next) => {
+	const authRequired = to.matched.some((route) => route.meta.authRequired)
+	const authed = store.state.user.isAuthorized
+
+	if (authRequired && !authed) {
+		next('/login')
+	}
+	else {
+		next()
+	}
+})
+
+
 /* eslint-disable no-new */
 const app = new Vue({
 	router,
