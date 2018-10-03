@@ -35,6 +35,7 @@ router.get('/', (req,res)=>{
 									item_code: el.fk_movement_item_code,
 									from: el.fk_transportation_from_place_name,
 									to: el.fk_transportation_to_place_name,
+									is_active: el.transportation_is_active,
 							}))
 				})
 			})
