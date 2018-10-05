@@ -1,20 +1,26 @@
 <template>
 	<div>
-		
+		<div v-if="isAuthorized">
+			{{time}}, {{userFirstName}}
+		</div>
+		<div v-if="isAuthorized">
+			<card-view></card-view>
+		</div>
 	</div>
 </template>
 
 <script type="text/javascript">
-	
-	import eligible_objects from '../mixins/eligible-objects'
+	import cardView from '../mixins/card-view.vue'
 	import Item from '../components/item.vue'
 
 	export default {
 		data: ()=>({
 				page_name: "Home"
 			}),
+		components: {
+			cardView
+		},
 		props: { objects: Array, currentUser: Object},
-		mixins: [eligible_objects("Home")],
 		computed: {
 			time: function(){
 				var hours = (new Date()).getHours()
@@ -27,7 +33,10 @@
 			},
 			userFirstName : function () {
 				return this.currentUser.full_name.match(/^(\w+)\W*/)[1]
-			}
+			},
+			isAuthorized () {
+      			return this.$store.state.user.isAuthorized
+    		}
 		}
 
 	}

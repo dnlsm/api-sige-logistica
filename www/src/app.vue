@@ -80,16 +80,15 @@
 									Entrar
 								</a> 
 							</router-link>					
-							<router-link
-									tag="span"
-									to="/login"
+							<span
 									class="navbar-item"
 									v-if="isAuthorized"
+									v-on:click="logout"
 									>
-								<a class="is-link" :class="{'is-selected': $router.currentRoute.path == '/login'}">
-									Entrar
+								<a class="is-link">
+									Sair
 								</a> 
-							</router-link>
+							</span>
 						</div>
 					</div>	
 				</div>
@@ -126,6 +125,9 @@
 	export default {
 		created() {
 			var _token = localStorage.getItem('token')
+
+			if (this.$router.currentRoute.path == '/login')
+				return
 			if (!_token)
 				return
 			this.loadData()
@@ -175,14 +177,17 @@
 				new Promise((compute)=> compute(null))
 					.then(()=> vm.inLoading = true)
 					.then(()=> vm.loadUserData())
-					.catch(()=>console.log('ERRO DE AUTENTICAÇÃO'))
-					.then(()=> vm.$store.commit('login'))
 					.then(()=> vm.loadAllUsers())
 					.then(()=> vm.loadAllItems())
 					.then(()=> vm.loadAllTransportations())
 					.then(()=> vm.loadAllProtocols())
-					.catch(()=>console.log('ERRO NÃO IDENTIFICADO'))
+					.then(()=> vm.$store.commit('login'))
+					.catch(()=>console.log('ERRO DE AUTENTICAÇÃO'))
 					.then(()=> vm.inLoading = false)
+			},
+			logout: function(){
+				this.$store.commit('logout')
+				this.localStorage.clear()
 			},
 			loadAllUsers: function (token = localStorage.getItem('token')) {
 				var vm = this

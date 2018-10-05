@@ -25,7 +25,7 @@ var routes	=
 							{
 								path: 'login',
 								component: Login,
-								meta: { noauth:true }
+								meta: { onlyUnauth:true }
 							},
 							{
 								path: 'items',

@@ -19,10 +19,14 @@ import store from './store'
 
 router.beforeEach((to, from, next) => {
 	const authRequired = to.matched.some((route) => route.meta.authRequired)
+	const onlyUnauth = to.matched.some((route) => route.meta.onlyUnauth)
 	const authed = store.state.user.isAuthorized
 
 	if (authRequired && !authed) {
 		next('/login')
+	}
+	else if(onlyUnauth && authed){
+		next('/')
 	}
 	else {
 		next()

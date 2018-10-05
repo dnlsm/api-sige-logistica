@@ -7,7 +7,7 @@
 				<button class="delete" aria-label="close"></button>
 			</header>
 			<section class="modal-card-body">
-				Nome: {{data}}
+				Nome:
 			</section>
 			<footer class="modal-card-foot">
 				<button class="button is-success">Save changes</button>
