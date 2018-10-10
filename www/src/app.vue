@@ -187,7 +187,8 @@
 			},
 			logout: function(){
 				this.$store.commit('logout')
-				this.localStorage.clear()
+				localStorage.clear()
+				this.$router.push('/')
 			},
 			loadAllUsers: function (token = localStorage.getItem('token')) {
 				var vm = this

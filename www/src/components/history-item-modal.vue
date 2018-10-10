@@ -1,6 +1,6 @@
 <template>
 	<div class="modal" :class="{'is-active': control.isActive}">
-		<div class="modal-background" v-on:click="(control.onClose ||)"></div>
+		<div class="modal-background" v-on:click=""></div>
 		<div class="modal-card">
 			<section class="modal-card-body">
 				{{data}}

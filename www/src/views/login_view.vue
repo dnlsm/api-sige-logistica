@@ -4,9 +4,6 @@
 			<div class="columns is-centered">
 				<div class="column is-3">
 					<div class="box">
-						<div class="has-text-centered">
-							<img src="/assets/logo.png">
-						</div>
 						<br><br>
 						<div class="has-text-centered">
 							Entrar

@@ -1,6 +1,8 @@
 <template>
 	<div>
 		<card-view :rendererOptions="doptions"></card-view>
+		<new-protocol :control="newProtocolControlMerged" v-if="newProtocolControlMerged.isActive"/>
+		<view-protocol :control="viewProtocolControlMerged" :data="viewProtocolControlMerged.data" v-if="viewProtocolControlMerged.isActive"/>
 	</div>
 </template>
 
@@ -8,18 +10,58 @@
 	
 	import eligible_objects from '../mixins/eligible-objects'
 	import cardView from '../mixins/card-view.vue'
-
+	import newProtocol from '../components/new-protocol-modal.vue'
+	import viewProtocol from '../components/view-protocol-modal.vue'
 	export default {
-		data: ()=>({}),
-		props: { objects: Array},
+		data: ()=>({
+			newProtocolControl: {
+				isActive: false,
+			},
+			viewProtocolControl: {
+				isActive: false,
+				data: {
+
+				}
+			},
+		}),
+		props: { objects: Array, currentUser: Object},
 		mixins: [eligible_objects("PROTOCOL")],
 		computed: {
+			newProtocolControlMerged: function(){
+				var vm = this
+				var np = vm.newProtocolControl
+				np.onCancel = function(){
+					vm.newProtocolControl.isActive = false
+				}
+
+				np.onClose = function(){
+					
+				}
+
+				np.onSubmit = function(){
+
+				}
+
+				return np
+			},
+			viewProtocolControlMerged: function(){
+				var vm = this
+				var np = vm.viewProtocolControl
+				np.onClose = function(){
+					vm.viewProtocolControl.isActive = false
+				}
+				return np
+			},
 			doptions: function(){
 				var vm = this
 				return	{
 							buttons : 	[
 											{
-												draw: (obj,  index) => `Ver amostras`
+												draw: (obj,  index) => `Ver amostras`,
+												onClick: (obj, option, index) => {
+																			vm.viewProtocolControl.data = JSON.parse(JSON.stringify(obj));
+																			vm.viewProtocolControl.isActive = true;
+																		}
 											},
 											{
 												draw: (obj,  index) => `Retirada`
@@ -35,9 +77,20 @@
 										{
 											name: 'Excluir',
 											icon: 'fa-trash-alt'
+										},
+										{
+											name: 'Novo protocolo',
+											icon: 'fa-plus-circle',
+											color: '#24ad2d',
+											onlyInSelectionMode: false,
+											isVisible: ['ROOT', 'LOGISTIC'].some((el)=>el == vm.currentUser.category),
+											onClick: (tool, index)=>{
+												console.log('New protocol')
+												vm.newProtocolControl.isActive = true
+											}
 										}
 									],
-							cards : this.eligible_objects.concat(this.eligible_objects).concat(this.eligible_objects),
+							cards : this.eligible_objects,
 							defaultToolbar:{
 								defaultTool: {
 									draw: (obj, index) => `<span class="icon is-small">
@@ -95,7 +148,7 @@
 						}
 			}
 		},
-		components: {cardView}
+		components: {cardView, newProtocol, viewProtocol}
 
 
 	}
