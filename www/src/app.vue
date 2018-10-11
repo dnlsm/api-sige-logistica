@@ -174,16 +174,24 @@
 			},
 			loadData: function(){
 				var vm = this
-				new Promise((compute)=> compute(null))
-					.then(()=> vm.inLoading = true)
-					.then(()=> vm.loadUserData())
-					.then(()=> vm.loadAllUsers())
-					.then(()=> vm.loadAllItems())
-					.then(()=> vm.loadAllTransportations())
-					.then(()=> vm.loadAllProtocols())
-					.then(()=> vm.$store.commit('login'))
-					.catch(()=>console.log('ERRO DE AUTENTICAÇÃO'))
-					.then(()=> vm.inLoading = false)
+					new Promise((compute)=> compute(null))
+						.then(()=> {
+											vm.loadStatus.protocol = false
+											vm.loadStatus.transportation = false
+											vm.loadStatus.item = false
+											vm.loadStatus.user = false
+											vm.loadStatus.movement = false
+											vm.loadStatus.userData = false
+						})
+						.then(()=> vm.inLoading = true)
+						.then(()=> vm.loadUserData())
+						.then(()=> vm.loadAllUsers())
+						.then(()=> vm.loadAllItems())
+						.then(()=> vm.loadAllTransportations())
+						.then(()=> vm.loadAllProtocols())
+						.then(()=> vm.$store.commit('login'))
+						.catch(()=>console.log('ERRO DE AUTENTICAÇÃO'))
+						.then(()=> vm.inLoading = false)
 			},
 			logout: function(){
 				this.$store.commit('logout')

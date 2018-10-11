@@ -4,9 +4,11 @@
 			<div class="columns is-centered">
 				<div class="column is-3">
 					<div class="box">
-						<br><br>
-						<div class="has-text-centered">
+						<div class="has-text-centered title">
 							Entrar
+						</div>
+						<div class="has-text-centered subtitle">
+							Insira suas credenciais
 						</div>
 						<br>
 						<div class="">

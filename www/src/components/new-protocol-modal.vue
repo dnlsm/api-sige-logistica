@@ -11,7 +11,7 @@
 				<div>
 					<div class="field is-horizontal">
 						<div class="field-label is-normal">
-							<label class="label">*Protocolo {{protocol}}</label>
+							<label class="label">*Protocolo</label>
 						</div>
 						<div class="field-body">
 							<div class="field">
