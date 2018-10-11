@@ -20,7 +20,7 @@ router.use((req,res,next)=>{
 	var token = req.query.token
 
 	if(!token)
-		return res.json(INVALID_TOKEN)
+		return res.status(401).json(INVALID_TOKEN)
 
 	SELECT(	'*',
 			'USER INNER JOIN SESSION ON fk_session_user_login = user_login INNER JOIN PLACE ON place_name = fk_user_place_name', 
@@ -54,10 +54,10 @@ router.use((req,res,next)=>{
 
 		UPDATE('SESSION', [['session_expiration',newExpiration.toMySQL()]],[['session_token', token]]).exec()
 		.then(()=> next())
-		.error(()=> res.json(INTERNAL_SERVER_ERROR))
+		.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
 	})
-	.onZero(()=> res.json(INVALID_TOKEN))
-	.error(()=> res.json(INTERNAL_SERVER_ERROR))
+	.onZero(()=> res.status(401).json(INVALID_TOKEN))
+	.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
 })
 
 
