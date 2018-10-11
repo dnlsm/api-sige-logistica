@@ -13,7 +13,11 @@ router.get('/', (req,res)=>{
 	.onAny((results)=>{
 		SELECT('*', `TRANSPORTATION t
 						INNER JOIN TRANSPORTATION_MOVEMENT tm
-						ON tm.fk_movement_transportation_code = t.transportation_code`, ' 1 GROUP BY fk_transportation_protocol_code, fk_movement_item_code')
+							ON tm.fk_movement_transportation_code = t.transportation_code
+						INNER JOIN ITEM i
+							ON i.item_code = tm.fk_movement_item_code`,
+
+						' 1 GROUP BY fk_transportation_protocol_code, fk_movement_item_code')
 		.exec()
 		.onAny((results2)=>{
 
