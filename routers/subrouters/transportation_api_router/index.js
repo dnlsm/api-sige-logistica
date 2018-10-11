@@ -31,7 +31,8 @@ router.get('/', (req,res)=>{
 										requester_user: result['fk_transportation_requester_user_login'],
 										requested_user: result['fk_transportation_requested_user_login'],
 										from: result['fk_transportation_from_place_name'],
-										to: result['fk_transportation_to_place_name']
+										to: result['fk_transportation_to_place_name']¨,
+										created_date: el['transportation_date_created'],
 									}
 					})
 	})

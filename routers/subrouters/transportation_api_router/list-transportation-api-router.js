@@ -31,6 +31,7 @@ router.get('/', (req,res)=>{
 												requested_user: el['fk_transportation_requested_user_login'],
 												from: 			el['fk_transportation_from_place_name'],
 												to: 			el['fk_transportation_to_place_name'],
+												created_date: el['transportation_date_created'],
 											}))
 											.map((el)=>{
 												el.items = results2.filter((ell)=> ell.fk_movement_transportation_code == el.code)

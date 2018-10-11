@@ -16,7 +16,7 @@ router.get('/', (req,res)=>{
 	])
 	.exec()
 	.onOne((result)=>{
-			SELECT('*', 'TRANSPORTATION_MOVEMENT INNER JOIN TRANSPORTATION ON fk_transportation_code = transportation_code',[
+			SELECT('*', 'TRANSPORTATION_MOVEMENT INNER JOIN TRANSPORTATION ON fk_movement_transportation_code = transportation_code',[
 				["fk_movement_item_code", item_code]
 			])
 			.exec()
