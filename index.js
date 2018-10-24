@@ -19,7 +19,6 @@ var api_router = require('./routers/api-router')
 var api2Router = require('./API2/api2Router')
 
 
-
 	app.use((req,res,next)=> {console.time('request'); next()})
 
 	// Configura Middleware para webpack com hot-reload

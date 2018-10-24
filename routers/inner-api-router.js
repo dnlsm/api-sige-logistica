@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/', (req,res)=>{
 
-	res.json({
+	res.status(200).json({
 				msg	: "Valid token",
 				status_code	: 200,
 				return :		{

@@ -18,7 +18,7 @@ router.get('/', (req,res)=>{
 
 	// res.json retorna um json para ao usuário
 	if(!username || !password)
-		res.json(MISSING_PARAMETERS)
+		res.status(400).json(MISSING_PARAMETERS)
 	else  // SELECT * FROM USER WHERE user_login = "username" AND user_password = "password"
 		SELECT('*', 'USER', [
 								["user_login", username],
@@ -44,16 +44,16 @@ router.get('/', (req,res)=>{
 							)
 				.exec()
 				.then((results, fields)=>{
-					res.json(	{
+					res.status(200).json(	{
 									msg	: "Login successful",
 									status_code	: 200,
 									return	:	{ token, creation, expiration}
 								}
 							)
 				})
-				.error(()=> res.json(INTERNAL_SERVER_ERROR))
+				.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
 		})
-		.onZero(()=> res.json(INVALID_CREDENTIALS))
+		.onZero(()=> res.status(401).json(INVALID_CREDENTIALS))
 })
 
 module.exports = router

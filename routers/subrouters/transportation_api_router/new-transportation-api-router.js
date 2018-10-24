@@ -15,13 +15,13 @@ const {	INTERNAL_SERVER_ERROR,
 router.get('/', (req,res)=>{
 	var transportation_code 		= req.query.transportation_code
 	var transportation_date 		= req.query.transportation_date
-	var transportation_notes		= req.query.transportation_notes
-	var transportation_is_active 	= req.query.transportation_is_active
-	var transportation_protocol 	= req.query.transportation_protocol
-	var transportation_requester	= req.query.transportation_requester
-	var transportation_requested	= req.query.transportation_requested
-	var transportation_from 		= req.query.transportation_from
-	var transportation_to 			= req.query.transportation_to
+	var transportation_notes		= req.query.notes
+	var transportation_is_active 	= req.query.is_active
+	var transportation_protocol 	= req.query.protocol
+	var transportation_requester	= req.query.requester
+	var transportation_requested	= req.query.requested
+	var transportation_from 		= req.query.from
+	var transportation_to 			= req.query.to
 
 	var category 					= req.user_credentials.a_user_category
 
@@ -43,7 +43,7 @@ router.get('/', (req,res)=>{
 			// Monta o array de Campos e Valores do registro
 			var record = []
 			record.push(['transportation_code', transportation_code])
-			record.push(['transportation_date', transportation_code])
+			record.push(['transportation_date', transportation_date])
 			record.push(['transportation_is_active', transportation_is_active])
 			record.push(['fk_transportation_protocol_code', transportation_protocol])
 			record.push(['fk_transportation_requester_user_login', transportation_requester])

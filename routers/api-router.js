@@ -4,8 +4,10 @@ const express = require('express')
 const router = express.Router()
 
 // importando utilitários
-const {SELECT} = require('../utils/db-connect')
+const {SELECT, UPDATE} = require('../utils/db-connect')
 const {INVALID_TOKEN,MISSING_PARAMETERS,INTERNAL_SERVER_ERROR} = require('../utils/error-messages')
+
+require('../utils/date-manipulation')
 
 router.get('/', (req,res)=>{
 	res.end('api-router')
@@ -18,7 +20,7 @@ router.use((req,res,next)=>{
 	var token = req.query.token
 
 	if(!token)
-		return res.json(INVALID_TOKEN)
+		return res.status(401).json(INVALID_TOKEN)
 
 	SELECT(	'*',
 			'USER INNER JOIN SESSION ON fk_session_user_login = user_login INNER JOIN PLACE ON place_name = fk_user_place_name', 
@@ -48,10 +50,14 @@ router.use((req,res,next)=>{
 		console.log(user_credentials)
 		req.user_credentials = user_credentials
 
-		next()
+		var newExpiration = (new Date()).shift(3000000)
+
+		UPDATE('SESSION', [['session_expiration',newExpiration.toMySQL()]],[['session_token', token]]).exec()
+		.then(()=> next())
+		.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
 	})
-	.onZero(()=> res.json(INVALID_TOKEN))
-	.error(()=> res.json(INTERNAL_SERVER_ERROR))
+	.onZero(()=> res.status(401).json(INVALID_TOKEN))
+	.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
 })
 
 
