@@ -123,7 +123,7 @@
 <script type="text/javascript">
 
 	export default {
-		beforeCreate() {
+		created() {
 			var _token = localStorage.getItem('token')
 
 			if (this.$router.currentRoute.path == '/login')
