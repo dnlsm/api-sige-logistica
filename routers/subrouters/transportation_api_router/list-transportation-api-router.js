@@ -40,8 +40,8 @@ router.get('/', (req,res)=>{
 											.map((el)=>{
 												el.items = results2.filter((ell)=> ell.fk_movement_transportation_code == el.code)
 																   .map((ell)=>({
-																   					item_code: ell.fk_movement_item_code,
-																   					item_name: ell.item_name
+																   					code: ell.fk_movement_item_code,
+																   					name: ell.item_name
 																   				}))
 												return el
 											})
