@@ -6,6 +6,12 @@ const INVALID_CREDENTIALS	=
 		status_code	: 401
 	}
 
+const PASSWORD_CHANGED	=
+	{
+		msg	: "Password changed",
+		status_code	: 200
+	}
+
 const INVALID_TOKEN	=
 	{
 		msg	: "Invalid token",
@@ -82,5 +88,6 @@ module.exports =
 	TRANSPORTATION_NOT_FOUND,
 	FORBIDDEN,
 	ITEM_ALREADY_EXISTS,
-	NO_MOVEMENTS_FOUND
+	NO_MOVEMENTS_FOUND,
+	PASSWORD_CHANGED
 }

@@ -21,6 +21,7 @@
     "@babel/core": "^7.0.0",
     "babel": "^6.23.0",
     "babel-loader": "^8.0.0",
+    "body-parser": "^1.18.3",
     "bulma": "^0.7.1",
     "bulma-loader": "^1.0.1",
     "css-loader": "^1.0.0",

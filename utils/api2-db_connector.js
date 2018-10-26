@@ -202,4 +202,4 @@ function UPDATE(table, record, where='1'){
 
 
 // Exporting functions
-module.exports = { SELECT, INSERT_INTO, UPDATE}
+module.exports = { SELECT, INSERT_INTO, UPDATE, SQL}
