@@ -1,0 +1,8 @@
+{
+	"host"		: 	"awsdrc02.cpqd.com.br",
+	"user" 		: 	"sige",
+	"password"	: 	"sige-logistica",
+	"port"		: 	3306,
+	"database"	:	"SIGE2",
+	"timezone"	:	"-03:00"
+}
