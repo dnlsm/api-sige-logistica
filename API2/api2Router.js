@@ -4,8 +4,13 @@ const express = require('express')
 const router = express.Router()
 
 // importando utilitários
-const {SELECT, UPDATE} = require('../utils/api2-db_connector')
-const {INVALID_TOKEN,MISSING_PARAMETERS,INTERNAL_SERVER_ERROR} = require('../utils/error-messages')
+const {SELECT, UPDATE, SQL} = require('../utils/api2-db_connector')
+const {
+		INVALID_TOKEN,
+		MISSING_PARAMETERS,
+		INTERNAL_SERVER_ERROR,
+		PASSWORD_CHANGED
+	} = require('../utils/error-messages')
 
 require('../utils/date-manipulation')
 
@@ -16,6 +21,20 @@ router.get('/', (req,res)=>{
 //var auth_api_router = require('./auth-api-router')
 //router.use('/auth', auth_api_router)
 
+router.post('/password/change',(req,res)=>{
+	var newPassword = req.body.pwd
+	if(!newPassword)
+		return res.status(401).json(MISSING_PARAMETERS)
+
+	UPDATE('USER',
+			[['password', newPassword]],
+			[['login',re.user_credentials.a_user_login]])
+	.exec()
+	.onOne(()=> req.status(200).json(PASSWORD_CHANGED))
+	.onZero(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
+	.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
+})
+
 router.use((req,res,next)=>{
 	var token = req.query.token
 
@@ -23,27 +42,26 @@ router.use((req,res,next)=>{
 		return res.status(401).json(INVALID_TOKEN)
 
 	SELECT(	'*',
-			'USER INNER JOIN SESSION ON fk_session_user_login = user_login INNER JOIN PLACE ON place_name = fk_user_place_name', 
+
+			'USER u INNER JOIN SESSION s ON s.fkUser = u.login', 
 			[
-				['session_token', token],
-				['session_is_active', 1],
-				'session_creation < UTC_TIMESTAMP()',
-				'session_expiration > UTC_TIMESTAMP()'
+				['token', token],
+				['isActive', 1],
+				'creation < UTC_TIMESTAMP()',
+				'expiration > UTC_TIMESTAMP()'
 			]
 	).exec()
 	.onOne((results)=>{
 		results = results[0]
 		var user_credentials =	
 			{
-				a_user_login: 			results['user_login'],
-				a_user_full_name: 		results['user_full_name'],
-				a_user_category: 		results['user_category'],
-				a_user_place: 			results['place_name'],
-				a_user_place_location: 	results['place_location'],
+				a_user_login: 			results['login'],
+				a_user_full_name: 		results['fullName'],
+				a_user_category: 		results['category'],
 				a_token: 	{
-								value:		results['session_token'],
-								creation:	results['session_creation'],
-								expiration:	results['session_expiration']
+								value:		results['token'],
+								creation:	results['creation'],
+								expiration:	results['expiration']
 							}
 			}
 		console.log(results)
@@ -59,6 +77,10 @@ router.use((req,res,next)=>{
 	.onZero(()=> res.status(401).json(INVALID_TOKEN))
 	.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
 })
+
+const bodyParser = require('body-parser')
+router.user(bodyParser.json())
+router.user(bodyParser.urlencoded({extended: true}))
 
 router.get('/protocol/list', (req,res)=>{
 	var hist = req.query.history
@@ -162,10 +184,82 @@ router.get('/protocol/:id', (req,res)=>{
 
 		})
 	})
+
+
+
+
+router.get('/list/all/active',(req,res)=>{
+	SQL(
+		`
+		SELECT *
+		FROM
+			PLACE p
+			INNER JOIN ITEM i
+				ON i.fkCurrentLocation = p.name
+		WHERE
+			p.name != "Externo"
+		ORDER BY
+			p.name, i.fkProtocolCode, i.code
+		`)
+	.exec()
+	.onAny((placesAndItems)=>{
+		SQL('*',
+				`
+				SELECT *
+				FROM	TRANSPORTATION t
+					INNER JOIN INTENT i
+						ON t.fkIntent = i.code
+				WHERE
+					t.isFinished = false'
+				`)
+		.exec()
+		.onAny((transpAndIntents)=>{
+			ret = placesAndItems
+					.reduce(
+						(places, place)=>{
+							if(places.some((el)=>el.name === place.name))
+								return places
+							return places
+										.concat({
+													name: place.name,
+													description: place.description,
+													items:[],
+													transportation:[]
+												})
+						},
+					[])
+					.map((place)=>{
+						place.items =
+							placesAndItems
+							.filter((item)=> item.fkCurrentLocation === place.name)
+							.map((item)=>{
+								return {
+									code: item.code,
+									name: item.name,
+									protocol: item.fkProtocolCode
+								}
+							})
+						place.transportation =
+							transpAndIntents
+							.filter((transp)=> transp.fkToPlace === place.name)
+							.map((transp)=>{
+								return {
+									code: transp.code,
+									notes: transp.notes,
+									isFinished: false
+								}
+							})
+						return place
+					})
+		})
+		.onZero(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
+		.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
+	})
+	.onZero(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
+	.error(()=> res.status(500).json(INTERNAL_SERVER_ERROR))
 })
 
 //var inner_api_router = require('./inner-api-router')
 //router.use('/inner', inner_api_router)
-
 
 module.exports = router

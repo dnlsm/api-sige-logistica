@@ -16,8 +16,7 @@ var STATIC_DIR = path.join(__dirname, "www/static")
 
 // Importação de routers
 var api_router = require('./routers/api-router')
-
-
+var api2Router = require('./API2/api2Router')
 
 
 	app.use((req,res,next)=> {console.time('request'); next()})
@@ -34,6 +33,7 @@ var api_router = require('./routers/api-router')
 	// Middleware para rota /api
 	app.use('/api', api_router)
 
+	app.use('/api.v2', api2Router)
 
 	// Serve arquivo build.js compilado do webpack
 	app.use('/dist',express.static(DIST_DIR))
