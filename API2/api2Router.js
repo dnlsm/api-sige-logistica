@@ -166,6 +166,13 @@ router.get('/protocol/:id', (req,res)=>{
 				`)
 			.exec()
 			.then((itemsAndMovements)=>{
+				toPlaces.map((place)=>{
+
+					itemsAndMovements.filter((el)=> el.fkToPlace == place.place)
+							.reduce((acc,el)=>{
+								if(acc.some((ell)=> ell.it))
+							},[])
+				})
 				var protocolItems = itemsAndMovements.reduce((items, item)=>{
 						if (items.some((ell)=> ell.code == item.code))
 							return items
@@ -185,7 +192,71 @@ router.get('/protocol/:id', (req,res)=>{
 		})
 	})
 
+router.get('/item/:id', (req,res)=>{
+	var itemID = req.params.id
+	new SQL(`
+			SELECT
+				i.code item_code,
+				i.name item_name,
+				i.fkCurrentLocation item_location,
+				i.fkProtocolCode item_protocol,
+				i.fkCreatorUser item_creator
 
+			FROM ITEM i
+			WHERE i.code = ${itemID}
+			`)
+	.exec()
+	.onOne((item)=>{
+			item = item[0]
+
+			new SQL(`
+					SELECT 
+						i.code item_code,
+						in.fkToPlace movement_to_place
+						tm.code movement_code,
+						tm.isFinished movement_is_finished,
+						tm.deliveryTimestamp movemment_delivery,
+						tm.receiptTimestamp movement_receipt,
+						tm.fkDelivererUser movement_deliverer_user,
+						tm.fkReceiverUser movement_receiver_user
+					FROM ITEM i
+
+					INNER JOIN INTENT_ITEM ii
+					ON ii.fkItem = i.code
+
+					INNER JOIN  INTENT in
+					ON ii.fkIntent = in.code
+
+					LEFT JOIN TRANSPORTATION_MOVEMENT tm
+					ON tm.fkIntentItem = ii.code
+
+					WHERE i.code = ${itemID}
+
+					ORDER BY ii.code, tm.receiptTimestamp
+				`)
+			.exec()
+			.then((itAndMv)=>{
+				var places = itAndMv
+								.reduce((acc, record)=>{
+									if (acc.some((place)=> place.toPlace == record.movement_to_place))
+										return acc
+									return acc.concat({
+										toPlace: record.movement_to_place,
+										movimentation: itAndMv
+														.filter((movement)=> movement.movement_to_place)
+									})
+								},[])
+								.map((place)=>{
+									place.isHere = item.item_location == place.toPlace,
+									place.shouldBeHere = place.movimentation.some((ell)=> !ell.movement_is_finished)
+									place.wasHere = place.movimentation.some((ell) => ell.movement_is_finished)
+
+									return place 
+								})
+								// #TODO processar histórico de movimentação
+			})
+	})
+})
 
 
 router.get('/list/all/active',(req,res)=>{
